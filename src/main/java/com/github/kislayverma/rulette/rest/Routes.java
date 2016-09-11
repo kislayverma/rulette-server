@@ -5,39 +5,40 @@ import io.netty.handler.codec.http.HttpMethod;
 import org.restexpress.RestExpress;
 
 public abstract class Routes {
-	public static void define(Configuration config, RestExpress server) {
+
+    public static void define(Configuration config, RestExpress server) {
         // Get all rules in a rule system
-		server.uri("/getAllRules/{ruleSystemName}.{format}", config.getRuleSystemController())
-			.action("getAllRules", HttpMethod.GET)
-			.name(Constants.Routes.SAMPLE_COLLECTION);
+        server.uri("/getAllRules/{ruleSystemName}.{format}", config.getRuleSystemController())
+            .action("getAllRules", HttpMethod.GET)
+            .name(Constants.Routes.SAMPLE_COLLECTION);
 
         server.uri("/getApplicableRule/{ruleSystemName}.{format}", config.getRuleSystemController())
-			.action("getApplicableRule", HttpMethod.POST)
-			.name(Constants.Routes.SINGLE_SAMPLE);
+            .action("getApplicableRule", HttpMethod.POST)
+            .name(Constants.Routes.SINGLE_SAMPLE);
 
         server.uri("/getNextApplicableRule/{ruleSystemName}.{format}", config.getRuleSystemController())
-			.action("getNextApplicableRule", HttpMethod.POST)
-			.name(Constants.Routes.SINGLE_SAMPLE);
+            .action("getNextApplicableRule", HttpMethod.POST)
+            .name(Constants.Routes.SINGLE_SAMPLE);
 
         server.uri("/getRule/{ruleSystemName}/{ruleId}.{format}", config.getRuleSystemController())
-			.action("getRule", HttpMethod.GET)
-			.name(Constants.Routes.SINGLE_SAMPLE);
+            .action("getRule", HttpMethod.GET)
+            .name(Constants.Routes.SINGLE_SAMPLE);
 
         server.uri("/addRule/{ruleSystemName}.{format}", config.getRuleSystemController())
-			.action("addRule", HttpMethod.POST)
-			.name(Constants.Routes.SINGLE_SAMPLE);
+            .action("addRule", HttpMethod.POST)
+            .name(Constants.Routes.SINGLE_SAMPLE);
 
         server.uri("/updateRule/{ruleSystemName}/{ruleId}.{format}", config.getRuleSystemController())
-			.action("updateRule", HttpMethod.PUT)
-			.name(Constants.Routes.SINGLE_SAMPLE);
+            .action("updateRule", HttpMethod.PUT)
+            .name(Constants.Routes.SINGLE_SAMPLE);
 
         server.uri("/deleteRule/{ruleSystemName}/{ruleId}.{format}", config.getRuleSystemController())
-			.action("deleteRule", HttpMethod.DELETE)
-			.name(Constants.Routes.SINGLE_SAMPLE);
+            .action("deleteRule", HttpMethod.DELETE)
+            .name(Constants.Routes.SINGLE_SAMPLE);
 
         server.uri("/reload/{ruleSystemName}.{format}", config.getRuleSystemController())
-			.action("reloadRuleSystem", HttpMethod.PUT)
-			.name(Constants.Routes.SINGLE_SAMPLE);
+            .action("reloadRuleSystem", HttpMethod.PUT)
+            .name(Constants.Routes.SINGLE_SAMPLE);
     }
 
 //	public static void define(Configuration config, RestExpress server)

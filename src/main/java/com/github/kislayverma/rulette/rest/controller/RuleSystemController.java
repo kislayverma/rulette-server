@@ -16,6 +16,7 @@ import org.restexpress.Request;
 import org.restexpress.Response;
 
 public class RuleSystemController {
+
     private final RuleSystemFactory ruleSystemFactory;
 
     public RuleSystemController() {
@@ -24,10 +25,10 @@ public class RuleSystemController {
 
     public List<Rule> getAllRules(Request request, Response response) {
         String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
-		return getRuleSystem(ruleSystemName).getAllRules();
-	}
+        return getRuleSystem(ruleSystemName).getAllRules();
+    }
 
-	public Rule getApplicableRule(Request request, Response response) throws Exception {
+    public Rule getApplicableRule(Request request, Response response) throws Exception {
         try {
             Map<String, String> map = convertInputJsonToMap(request);
             String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
@@ -40,9 +41,9 @@ public class RuleSystemController {
         }
 
         return null;
-	}
+    }
 
-	public Rule getNextApplicableRule(Request request, Response response) throws Exception {
+    public Rule getNextApplicableRule(Request request, Response response) throws Exception {
         try {
             Map<String, String> map = convertInputJsonToMap(request);
             String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
@@ -55,15 +56,15 @@ public class RuleSystemController {
         }
 
         return null;
-	}
+    }
 
-	public Rule getRule(Request request, Response response) {
+    public Rule getRule(Request request, Response response) {
         String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
         String ruleIdStr = request.getHeader(Constants.Url.RULE_ID);
         Integer ruleId = Integer.parseInt(ruleIdStr);
 
         return getRuleSystem(ruleSystemName).getRule(ruleId);
-	}
+    }
 
     public Rule addRule(Request request, Response response) throws Exception {
         try {
@@ -78,9 +79,9 @@ public class RuleSystemController {
         }
 
         return null;
-	}
+    }
 
-	public Rule updateRule(Request request, Response response) throws Exception {
+    public Rule updateRule(Request request, Response response) throws Exception {
         try {
             Map<String, String> map = convertInputJsonToMap(request);
             String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
@@ -103,9 +104,9 @@ public class RuleSystemController {
         }
 
         return null;
-	}
+    }
 
-	public void deleteRule(Request request, Response response) throws Exception {
+    public void deleteRule(Request request, Response response) throws Exception {
         try {
             Map<String, String> map = convertInputJsonToMap(request);
             String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
@@ -119,13 +120,13 @@ public class RuleSystemController {
             response.setException(ex);
             response.setResponseStatus(HttpResponseStatus.BAD_REQUEST);
         }
-	}
+    }
 
-	public void reloadRuleSystem(Request request, Response response) throws Exception {
+    public void reloadRuleSystem(Request request, Response response) throws Exception {
         String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
         ruleSystemFactory.reloadRuleSystem(ruleSystemName);
         response.setResponseNoContent();
-	}
+    }
 
     private RuleSystem getRuleSystem(String ruleSystemName) {
         return ruleSystemFactory.getRuleSystem(ruleSystemName);
@@ -139,7 +140,8 @@ public class RuleSystemController {
         Map<String, String> map = new HashMap<>();
         Set<String> keySet = request.getBodyFromUrlFormEncoded(true).keySet();
         for (String payload : keySet) {
-            Map<String, Object> objMap = mapper.readValue(payload, new TypeReference<Map<String, Object>>(){});
+            Map<String, Object> objMap = mapper.readValue(payload, new TypeReference<Map<String, Object>>() {
+            });
             for (Map.Entry<String, Object> entry : objMap.entrySet()) {
                 map.put(entry.getKey(), (String) entry.getValue());
             }

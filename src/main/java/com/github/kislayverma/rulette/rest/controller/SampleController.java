@@ -6,40 +6,34 @@ import java.util.List;
 import org.restexpress.Request;
 import org.restexpress.Response;
 
-public class SampleController
-{
-	public SampleController()
-	{
-		super();
-	}
+public class SampleController {
 
-	public Object create(Request request, Response response)
-	{
-		//TODO: Your 'POST' logic here...
-		return null;
-	}
+    public SampleController() {
+        super();
+    }
 
-	public Object read(Request request, Response response)
-	{
-		//TODO: Your 'GET' logic here...
-		return null;
-	}
+    public Object create(Request request, Response response) {
+        //TODO: Your 'POST' logic here...
+        return null;
+    }
 
-	public List<Object> readAll(Request request, Response response)
-	{
-		//TODO: Your 'GET collection' logic here...
-		return Collections.emptyList();
-	}
+    public Object read(Request request, Response response) {
+        //TODO: Your 'GET' logic here...
+        return null;
+    }
 
-	public void update(Request request, Response response)
-	{
-		//TODO: Your 'PUT' logic here...
-		response.setResponseNoContent();
-	}
+    public List<Object> readAll(Request request, Response response) {
+        //TODO: Your 'GET collection' logic here...
+        return Collections.emptyList();
+    }
 
-	public void delete(Request request, Response response)
-	{
-		//TODO: Your 'DELETE' logic here...
-		response.setResponseNoContent();
-	}
+    public void update(Request request, Response response) {
+        //TODO: Your 'PUT' logic here...
+        response.setResponseNoContent();
+    }
+
+    public void delete(Request request, Response response) {
+        //TODO: Your 'DELETE' logic here...
+        response.setResponseNoContent();
+    }
 }

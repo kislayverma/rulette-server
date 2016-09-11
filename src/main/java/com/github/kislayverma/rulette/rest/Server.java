@@ -4,41 +4,45 @@ import org.restexpress.RestExpress;
 import org.restexpress.pipeline.SimpleConsoleLogMessageObserver;
 import com.github.kislayverma.rulette.rest.serialization.SerializationProvider;
 
-public class Server
-{
-	private static final String SERVICE_NAME = "Rulette";
+public class Server {
 
-	private RestExpress server;
-	private Configuration config;
-	private boolean isStarted = false;
+    private static final String SERVICE_NAME = "Rulette";
 
-	public Server(Configuration config) {
-		this.config = config;
-		RestExpress.setDefaultSerializationProvider(new SerializationProvider());
+    private RestExpress server;
+    private Configuration config;
+    private boolean isStarted = false;
 
-		this.server = new RestExpress()
-				.setName(SERVICE_NAME)
-				.setBaseUrl(config.getBaseUrl())
-				.setExecutorThreadCount(config.getExecutorThreadPoolSize())
-				.addMessageObserver(new SimpleConsoleLogMessageObserver());
+    public Server(Configuration config) {
+        this.config = config;
+        RestExpress.setDefaultSerializationProvider(new SerializationProvider());
 
-		Routes.define(config, server);
-	}
+        this.server = new RestExpress()
+            .setName(SERVICE_NAME)
+            .setBaseUrl(config.getBaseUrl())
+            .setExecutorThreadCount(config.getExecutorThreadPoolSize())
+            .addMessageObserver(new SimpleConsoleLogMessageObserver());
 
-	public Server start() {
-		if (!isStarted) {
-			server.bind(config.getPort());
-			isStarted = true;
-		}
+        Routes.define(config, server);
+    }
 
-		return this;
-	}
+    public Server start() {
+        if (!isStarted) {
+            server.bind(config.getPort());
+            isStarted = true;
+        }
 
-	public void awaitShutdown() {
-		if (isStarted) server.awaitShutdown();
-	}
+        return this;
+    }
 
-	public void shutdown() {
-		if (isStarted) server.shutdown();
-	}
+    public void awaitShutdown() {
+        if (isStarted) {
+            server.awaitShutdown();
+        }
+    }
+
+    public void shutdown() {
+        if (isStarted) {
+            server.shutdown();
+        }
+    }
 }

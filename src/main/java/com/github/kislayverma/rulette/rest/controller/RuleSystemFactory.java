@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class RuleSystemFactory {
+
     private static final Map<String, RuleSystem> RULE_SYSTEM_MAP = new ConcurrentHashMap<>();
 
     public RuleSystem getRuleSystem(String ruleSystemName) {
@@ -16,7 +17,7 @@ public class RuleSystemFactory {
         if (rs != null) {
             return rs;
         } else {
-            synchronized(RULE_SYSTEM_MAP) {
+            synchronized (RULE_SYSTEM_MAP) {
                 try {
                     rs = loadRuleSystem(ruleSystemName);
                     if (rs != null) {
@@ -34,7 +35,7 @@ public class RuleSystemFactory {
     }
 
     public void reloadRuleSystem(String ruleSystemName) {
-        synchronized(RULE_SYSTEM_MAP) {
+        synchronized (RULE_SYSTEM_MAP) {
             RULE_SYSTEM_MAP.remove(ruleSystemName);
         }
     }
