@@ -14,10 +14,13 @@ import java.util.Set;
 
 import org.restexpress.Request;
 import org.restexpress.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RuleSystemController {
 
     private final RuleSystemFactory ruleSystemFactory;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RuleSystemController.class);
 
     public RuleSystemController() {
         this.ruleSystemFactory = new RuleSystemFactory();
@@ -134,17 +137,18 @@ public class RuleSystemController {
 
     private Map<String, String> convertInputJsonToMap(Request request) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-//        System.out.println(request.getHeaderNames());
-//        System.out.println(request.getBodyFromUrlFormEncoded(true));
+        LOGGER.info("Request headers : " + request.getHeaderNames());
+        LOGGER.info("Request body  : " + request.getBodyFromUrlFormEncoded(true));
 
         Map<String, String> map = new HashMap<>();
         Set<String> keySet = request.getBodyFromUrlFormEncoded(true).keySet();
         for (String payload : keySet) {
-            Map<String, Object> objMap = mapper.readValue(payload, new TypeReference<Map<String, Object>>() {
-            });
-            for (Map.Entry<String, Object> entry : objMap.entrySet()) {
+            Map<String, Object> objMap =
+                mapper.readValue(payload, new TypeReference<Map<String, Object>>() {});
+
+            objMap.entrySet().stream().forEach((entry) -> {
                 map.put(entry.getKey(), (String) entry.getValue());
-            }
+            });
 
             return map;
         }
