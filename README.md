@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kislayverma/rulette-server.svg?branch=master)](https://travis-ci.org/kislayverma/rulette-server)
+
 # Understand
 Inspired by ElasticSearch, this is a standalone deployment built on RestExpress framework to expose Rulette APIs over REST. This allows non-java users to partake of the goodness.    
 
