@@ -7,7 +7,6 @@ import org.restexpress.RestExpress;
 public abstract class Routes {
 
     public static void define(Configuration config, RestExpress server) {
-        // Get all rules in a rule system
         server.uri("/getAllRules/{ruleSystemName}.{format}", config.getRuleSystemController())
             .action("getAllRules", HttpMethod.GET)
             .name(Constants.Routes.SAMPLE_COLLECTION);

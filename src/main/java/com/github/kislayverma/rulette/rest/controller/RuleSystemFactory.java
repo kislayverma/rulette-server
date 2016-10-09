@@ -2,7 +2,6 @@ package com.github.kislayverma.rulette.rest.controller;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.data.IDataProvider;
-import com.github.kislayverma.rulette.rest.Configuration;
 import com.github.kislayverma.rulette.rest.exception.RuleSystemException;
 import com.github.kislayverma.rulette.rest.exception.StorageEngineException;
 import com.github.kislayverma.rulette.rest.storage.DataProviderFactory;

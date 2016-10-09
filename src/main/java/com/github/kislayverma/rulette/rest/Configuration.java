@@ -2,7 +2,6 @@ package com.github.kislayverma.rulette.rest;
 
 import com.github.kislayverma.rulette.rest.controller.RuleSystemController;
 import com.github.kislayverma.rulette.rest.controller.RuleSystemFactory;
-import com.github.kislayverma.rulette.rest.controller.SampleController;
 import java.util.Properties;
 
 import org.restexpress.RestExpress;
@@ -24,7 +23,6 @@ public class Configuration extends Environment {
     private String storageEngine;
     private String storageConfigFilePath;
 
-    private SampleController sampleController;
     private RuleSystemController ruleSystemController;
 
     @Override
@@ -35,26 +33,10 @@ public class Configuration extends Environment {
 
         this.storageEngine = p.getProperty(STORAGE_ENGINE);
         this.storageConfigFilePath = p.getProperty(STORAGE_CONFIG_FILE_PATH);
-
-        initialize();
-    }
-
-    private void initialize() {
-//        try {
-//            sampleController = new SampleController();
-//
-//            RuleSystemFactory ruleSystemFactory =
-//                new RuleSystemFactory(this.storageEngine, this.storageConfigFilePath);
-//            ruleSystemController = new RuleSystemController(ruleSystemFactory);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     public void initComponents() {
         try {
-            sampleController = new SampleController();
-
             RuleSystemFactory ruleSystemFactory =
                 new RuleSystemFactory(this.storageEngine, this.storageConfigFilePath);
             ruleSystemController = new RuleSystemController(ruleSystemFactory);
@@ -72,10 +54,6 @@ public class Configuration extends Environment {
 
     public int getExecutorThreadPoolSize() {
         return executorThreadPoolSize;
-    }
-
-    public SampleController getSampleController() {
-        return sampleController;
     }
 
     public RuleSystemController getRuleSystemController() {
