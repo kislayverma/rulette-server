@@ -1,14 +1,28 @@
 package com.github.kislayverma.rulette.rest.controller;
 
 import com.github.kislayverma.rulette.RuleSystem;
+import com.github.kislayverma.rulette.core.data.IDataProvider;
+import com.github.kislayverma.rulette.rest.Configuration;
+import com.github.kislayverma.rulette.rest.exception.RuleSystemException;
+import com.github.kislayverma.rulette.rest.exception.StorageEngineException;
+import com.github.kislayverma.rulette.rest.storage.DataProviderFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RuleSystemFactory {
 
     private static final Map<String, RuleSystem> RULE_SYSTEM_MAP = new ConcurrentHashMap<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(RuleSystemFactory.class);
 
-    public RuleSystem getRuleSystem(String ruleSystemName) {
+    private final IDataProvider dataProvider;
+
+    public RuleSystemFactory(String storageEngineType, String storageConfigFilePath) throws StorageEngineException {
+        this.dataProvider = DataProviderFactory.getDataProvider(storageEngineType, storageConfigFilePath);
+    }
+
+    public RuleSystem getRuleSystem(String ruleSystemName) throws RuleSystemException {
         if (ruleSystemName == null) {
             throw new RuntimeException("Rule system name not provided");
         }
@@ -25,8 +39,8 @@ public class RuleSystemFactory {
                         return rs;
                     }
                 } catch (Exception ex) {
-                    ex.printStackTrace();
-                    throw new RuntimeException("Rule system with name " + ruleSystemName + " not defined");
+                    LOGGER.error("Error cresting rule system with name " + ruleSystemName, ex);
+                    throw new RuleSystemException("Error cresting rule system with name " + ruleSystemName, ex);
                 }
             }
         }
@@ -41,7 +55,7 @@ public class RuleSystemFactory {
     }
 
     private RuleSystem loadRuleSystem(String ruleSystemName) throws Exception {
-        System.out.print("Loading ruLe system with name " + ruleSystemName);
-        return new RuleSystem(ruleSystemName, null);
+        LOGGER.error("Loading ruLe system with name " + ruleSystemName);
+        return new RuleSystem(ruleSystemName, dataProvider);
     }
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.rest.Constants;
 import com.github.kislayverma.rulette.core.rule.Rule;
+import com.github.kislayverma.rulette.rest.exception.RuleSystemException;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,14 +20,15 @@ import org.slf4j.LoggerFactory;
 
 public class RuleSystemController {
 
-    private final RuleSystemFactory ruleSystemFactory;
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleSystemController.class);
 
-    public RuleSystemController() {
-        this.ruleSystemFactory = new RuleSystemFactory();
+    private final RuleSystemFactory ruleSystemFactory;
+
+    public RuleSystemController(RuleSystemFactory ruleSystemFactory) {
+        this.ruleSystemFactory = ruleSystemFactory;
     }
 
-    public List<Rule> getAllRules(Request request, Response response) {
+    public List<Rule> getAllRules(Request request, Response response) throws RuleSystemException {
         String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
         return getRuleSystem(ruleSystemName).getAllRules();
     }
@@ -61,7 +63,7 @@ public class RuleSystemController {
         return null;
     }
 
-    public Rule getRule(Request request, Response response) {
+    public Rule getRule(Request request, Response response) throws RuleSystemException {
         String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
         String ruleIdStr = request.getHeader(Constants.Url.RULE_ID);
         Integer ruleId = Integer.parseInt(ruleIdStr);
@@ -131,7 +133,7 @@ public class RuleSystemController {
         response.setResponseNoContent();
     }
 
-    private RuleSystem getRuleSystem(String ruleSystemName) {
+    private RuleSystem getRuleSystem(String ruleSystemName) throws RuleSystemException {
         return ruleSystemFactory.getRuleSystem(ruleSystemName);
     }
 
