@@ -24,3 +24,9 @@ By default, the 'mvn package' goal will create a fat jar file including the conf
 These are loaded from the classpath at runtime. However, to override the values embedded in the jar file, simply create
 a new configuration file on the classpath for the desired environment. For example, './config/dev/environment.properties'
 and any settings in that file will get added to, or override settings embedded in the jar file.
+
+## Rulette configuration
+rulette-server takes a data store configuration identical to Rulette engine. In your environment properties,
+specify 2 properties:
+* storage.engine - This is the type of database from which rules will be loaded. The only supported value for now is MYSQL.
+* storage.configFilePath - This is the path of the file from which datastore connection configurations will be loaded (same as what rulette-datasource.properties does to rulette-engine).
