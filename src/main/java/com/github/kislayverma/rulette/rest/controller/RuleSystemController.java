@@ -64,9 +64,8 @@ public class RuleSystemController {
     public Rule getRule(Request request, Response response) {
         String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
         String ruleIdStr = request.getHeader(Constants.Url.RULE_ID);
-        Integer ruleId = Integer.parseInt(ruleIdStr);
 
-        return getRuleSystem(ruleSystemName).getRule(ruleId);
+        return getRuleSystem(ruleSystemName).getRule(ruleIdStr);
     }
 
     public Rule addRule(Request request, Response response) throws Exception {
@@ -114,9 +113,8 @@ public class RuleSystemController {
             Map<String, String> map = convertInputJsonToMap(request);
             String ruleSystemName = request.getHeader(Constants.Url.RULE_SYSTEM_NAME);
             String ruleIdStr = request.getHeader(Constants.Url.RULE_ID);
-            Integer ruleId = Integer.parseInt(ruleIdStr);
 
-            getRuleSystem(ruleSystemName).deleteRule(ruleId);
+            getRuleSystem(ruleSystemName).deleteRule(ruleIdStr);
             response.setResponseNoContent();
         } catch (IOException ex) {
             ex.printStackTrace();

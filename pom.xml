@@ -38,7 +38,7 @@
         <tag>HEAD</tag>
     </scm>
     <properties>
-        <rulette.engine.version>1.2.6</rulette.engine.version>
+        <rulette.engine.version>1.2.8</rulette.engine.version>
     </properties>
 
     <dependencies>
