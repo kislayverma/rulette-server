@@ -1,0 +1,29 @@
+server.port: 8081
+
+spring:
+  application:
+    name: Rulette Server
+  thymeleaf:
+    cache: false
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+
+logging:
+  level:
+    root: DEBUG
+#  config: classpath:log4j2.xml
+rulesystems:
+  ruleSystemConfigList:
+    -   providerType: mysql
+        name: vat_rule_system
+        driverClass: com.mysql.jdbc.Driver
+        jdbcUrl: jdbc:mysql://localhost:3306/tax
+        username: root
+        password:
+        acquireIncrement: 1
+        initialPoolSize: 10
+        maxPoolSize: 50
+        minPoolSize: 10
+        maxStatements: 20
+        connectionTimeout: 5000
