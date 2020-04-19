@@ -32,7 +32,7 @@ public class RuleSystemFactory {
     @PostConstruct
     public synchronized void init() {
         LOGGER.info("Loading rule systems...");
-        ruleSystemConfigList.getRuleSystemConfigList()
+        ruleSystemConfigList.getConfigs()
             .forEach(config -> {
                 loadRuleSystem(config.getName(), config);
             });
@@ -80,7 +80,7 @@ public class RuleSystemFactory {
     }
 
     private Optional<RuleSystemConfig> getConfig(String ruleSystemName) {
-        for (RuleSystemConfig config : ruleSystemConfigList.getRuleSystemConfigList()) {
+        for (RuleSystemConfig config : ruleSystemConfigList.getConfigs()) {
             if (ruleSystemName.equals(config.getName())) {
                 return Optional.of(config);
             }

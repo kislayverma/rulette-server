@@ -1,20 +1,11 @@
 server.port: 8081
 
-spring:
-  application:
-    name: Rulette Server
-  thymeleaf:
-    cache: false
-    enabled: true
-    prefix: classpath:/templates/
-    suffix: .html
-
 logging:
   level:
     root: DEBUG
-#  config: classpath:log4j2.xml
+
 rulesystems:
-  ruleSystemConfigList:
+  configs:
     -   providerType: mysql
         name: vat_rule_system
         driverClass: com.mysql.jdbc.Driver

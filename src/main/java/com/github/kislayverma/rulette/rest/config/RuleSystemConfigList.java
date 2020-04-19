@@ -6,20 +6,20 @@ import java.util.List;
 
 @ConfigurationProperties(prefix = "rulesystems")
 public class RuleSystemConfigList {
-    private List<RuleSystemConfig> ruleSystemConfigList;
+    private List<RuleSystemConfig> configs;
 
-    public List<RuleSystemConfig> getRuleSystemConfigList() {
-        return ruleSystemConfigList;
+    public List<RuleSystemConfig> getConfigs() {
+        return configs;
     }
 
-    public void setRuleSystemConfigList(List<RuleSystemConfig> ruleSystemConfigList) {
-        this.ruleSystemConfigList = ruleSystemConfigList;
+    public void setConfigs(List<RuleSystemConfig> configs) {
+        this.configs = configs;
     }
 
     @Override
     public String toString() {
         return "RuleSystemConfigList{" +
-            "ruleSystemConfigList=" + ruleSystemConfigList +
+            "configs=" + configs +
             '}';
     }
 }
