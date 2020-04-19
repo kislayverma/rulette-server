@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest;
+package com.github.kislayverma.rulette.rest.ui;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

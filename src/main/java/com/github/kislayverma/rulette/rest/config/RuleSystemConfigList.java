@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest;
+package com.github.kislayverma.rulette.rest.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

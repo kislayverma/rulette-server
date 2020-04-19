@@ -1,7 +1,8 @@
-package com.github.kislayverma.rulette.rest;
+package com.github.kislayverma.rulette.rest.rulesystem;
 
 import com.github.kislayverma.rulette.core.data.IDataProvider;
 import com.github.kislayverma.rulette.mysql.MysqlDataProvider;
+import com.github.kislayverma.rulette.rest.config.RuleSystemConfig;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import org.springframework.stereotype.Component;
 
