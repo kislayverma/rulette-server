@@ -1,6 +1,63 @@
-<html>
-    <head><title>Home Page</title></head>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="utf-8">
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Rulette Server</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+    </head>
     <body>
-        <h1>Welcome to Rulette Server</h1>
+        <div class="container-fluid my-2">
+            Rulette Server
+        </div>
+        <div class="container-fluid my-2">
+            <div class="card">
+                <div class="card-body">
+                    <div th:switch="${ruleSystems}" class="container my-3">
+                        <div class="col-md-10">
+                            <h2 th:case="null">No record found !!</h2>
+                            <div th:case="*">
+                                <table class="table table-striped table-responsive-md">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Table Name</th>
+                                        <th>Unique Id Column Name</th>
+                                        <th>Table Name</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ruleSystem : ${ruleSystems}">
+                                        <td th:text="${ruleSystem.ruleSystemName}"></td>
+                                        <td th:text="${ruleSystem.tableName}"></td>
+                                        <td th:text="${ruleSystem.uniqueIdColumnName}"></td>
+                                        <td th:text="${ruleSystem.uniqueOutputColumnName}"></td>
+                                        <td>
+                                            <a th:href="@{/edit/{id}(id=${ruleSystem.ruleSystemName})}"
+                                               class="btn btn-primary">
+                                                <i class="fas fa-user-edit ml-2"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/delete/{id}(id=${ruleSystem.ruleSystemName})}"
+                                               class="btn btn-primary">
+                                                <i class="fas fa-user-times ml-2"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
+
