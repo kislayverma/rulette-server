@@ -27,7 +27,6 @@
                         <th>Rule Inputs</th>
                         <th>Output Column</th>
                         <th>View Rules</th>
-                        <th>Delete Rule System</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -44,12 +43,6 @@
                         <td>
                             <a th:href="@{/ui/{ruleSystemName}/rules(ruleSystemName = ${ruleSystem.ruleSystemName})}">
                                 View Rules
-                            </a>
-                        </td>
-                        <td>
-                            <a th:href="@{/delete/{id}(id=${ruleSystem.ruleSystemName})}"
-                               class="btn btn-primary">
-                                <i class="fas fa-user-times ml-2"></i>
                             </a>
                         </td>
                     </tr>
