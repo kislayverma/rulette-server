@@ -26,7 +26,7 @@
                         <th>Unique Id Column</th>
                         <th>Rule Inputs</th>
                         <th>Output Column</th>
-                        <th>Edit Rule System</th>
+                        <th>View Rules</th>
                         <th>Delete Rule System</th>
                     </tr>
                     </thead>
@@ -37,14 +37,13 @@
                         <td th:text="${ruleSystem.uniqueIdColumnName}"></td>
                         <td>
                             <span th:each="column : ${ruleSystem.inputColumnList}">
-                                <span th:text="${column.name}"></span><br/>
+                               <span th:text="${column.name}"></span><br/>
                             </span>
                         </td>
                         <td th:text="${ruleSystem.uniqueOutputColumnName}"></td>
                         <td>
-                            <a th:href="@{/edit/{id}(id=${ruleSystem.ruleSystemName})}"
-                               class="btn btn-primary">
-                                <i class="fas fa-user-edit ml-2"></i>
+                            <a th:href="@{/ui/{ruleSystemName}/rules(ruleSystemName = ${ruleSystem.ruleSystemName})}">
+                                View Rules
                             </a>
                         </td>
                         <td>

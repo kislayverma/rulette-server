@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:td="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="utf-8">
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Rulette Server</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+    </head>
+    <body>
+        <div class="container-fluid my-2 header">
+            <a href = "/ui/"><h1>Rulette Server</h1></a>
+        </div>
+        <div class="container-fluid my-2 center-pill">
+            <h4 th:text="${ruleSystem.ruleSystemName}"></h4>
+        </div>
+        <div th:switch="${rules}" class="container-fluid my-2">
+            <h2 th:case="null">No record found !!</h2>
+
+            <div th:case="*">
+                <table class="table table-striped table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th th:text="${ruleSystem.uniqueIdColumnName}"></th>
+                            <th:block th:each="column : ${ruleSystem.inputColumnList}">
+                                <th th:text="${column.name}">Header Field</th>
+                            </th:block>
+                            <th th:text="${ruleSystem.uniqueOutputColumnName}"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="rule : ${rules}">
+                        <td th:text="${rule.get(ruleSystem.uniqueIdColumnName)}"></td>
+                        <td:block th:each="colName : ${ruleSystem.inputColumnList}">
+                            <td th:text="${rule.get(colName.name)}"></td>
+                        </td:block>
+                        <td th:text="${rule.get(ruleSystem.uniqueOutputColumnName)}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
+
