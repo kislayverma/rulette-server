@@ -17,41 +17,20 @@ public class RuleSystemController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleSystemController.class);
 
     @Autowired
-    private RuleSystemFactory ruleSystemFactory;
+    private RuleSystemService ruleSystemService;
 
     @GetMapping("/")
     public List<RuleSystemMetaData> getAllRuleSystemMetaData() {
-        final List<RuleSystemMetaData> output = new ArrayList<>();
-        ruleSystemFactory.getAllRuleSystems().forEach(rs -> {
-            try {
-                output.add(rs.getMetaData());
-            } catch (Exception ex) {
-                throw new BadServerException("Error returning rule system metadata", ex);
-            }
-        });
-
-        return output;
+        return ruleSystemService.getAllRuleSystemMetaData();
     }
 
     @GetMapping("/{ruleSystemName}")
     public RuleSystemMetaData getRuleSystemMetadata(@PathVariable String ruleSystemName) {
-        try {
-            return getRuleSystem(ruleSystemName).getMetaData();
-        } catch (Exception ex) {
-            throw new BadServerException("Error returning rule system metadata", ex);
-        }
+        return ruleSystemService.getRuleSystemMetadata(ruleSystemName);
     }
 
     @PutMapping("/{ruleSystemName}/reload")
     public void reload(@PathVariable String ruleSystemName) {
-        try {
-            ruleSystemFactory.reloadRuleSystem(ruleSystemName);
-        } catch (Exception ex) {
-            throw new BadServerException("Error returning rule system metadata", ex);
-        }
-    }
-
-    private RuleSystem getRuleSystem(final String ruleSystemName) {
-        return ruleSystemFactory.getRuleSystem(ruleSystemName);
+        ruleSystemService.reload(ruleSystemName);
     }
 }

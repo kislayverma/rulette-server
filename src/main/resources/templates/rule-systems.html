@@ -11,8 +11,8 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     </head>
     <body>
-        <div class="container-fluid my-2 header">
-            <h1>Rulette Server</h1>
+        <div class="container-fluid my-2 header navbar-text border-bottom shadow" align="center">
+            <a href = "/ui/"><h1>Rulette Server</h1></a>
         </div>
         <div th:switch="${ruleSystems}" class="container-fluid my-2">
             <h2 th:case="null">No record found !!</h2>
