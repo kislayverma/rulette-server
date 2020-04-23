@@ -41,13 +41,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <th:block th:each="inputEntry : ${ruleDto.ruleInputs.entrySet()}">
+                            <th:block th:each="col : ${ruleSystem.inputColumnList}">
                                 <div class="form-group col">
                                     <input type="text"
-                                           th:field="*{ruleInputs['__${inputEntry.key}__']}"
-                                           th:value="*{ruleInputs['__${inputEntry.key}__']}"
+                                           th:field="*{ruleInputs['__${col.name}__']}"
+                                           th:value="*{ruleInputs['__${col.name}__']}"
                                            class="form-control"
-                                           th:id="*{ruleInputs['__${inputEntry.key}__']}" />
+                                           th:id="*{ruleInputs['__${col.name}__']}" />
                                 </div>
                             </th:block>
                             <div class="form-group col">
