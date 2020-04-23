@@ -33,6 +33,7 @@
                             </th:block>
                             <th th:text="${ruleSystem.uniqueOutputColumnName}"></th>
                             <th>Edit Rule</th>
+                            <th>Delete Rule</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,6 +48,13 @@
                                     (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${rule.get(ruleSystem.uniqueIdColumnName)})}"
                                class="btn btn-primary">
                                 <i class="fas fa-user-edit ml-2"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a th:href="@{/ui/delete/{ruleSystemName}/{ruleId}
+                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${rule.get(ruleSystem.uniqueIdColumnName)})}"
+                               class="btn btn-primary">
+                                <i class="fas fa-user-times ml-2"></i>
                             </a>
                         </td>
                     </tr>
