@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Add Employee</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+    <div class="container-fluid my-2 header navbar-text border-bottom shadow" align="center">
+        <a href = "/ui/"><h1>Rulette Server</h1></a>
+    </div>
+    <div class="container my-5">
+        <h4 th:text="@{Editing rule id {id}(id = ${ruleToEdit.get(ruleSystem.uniqueIdColumnName)})}"></h4>
+        <div class="card">
+            <div class="card-body">
+                <div class="col">
+                    <form action="#" th:object="${ruleDto}"
+                          th:action="@{/ui/save/{ruleSystemName}/{ruleId}
+                            (ruleSystemName = ${ruleSystem.ruleSystemName}, ruleId=${ruleToEdit.get(ruleSystem.uniqueIdColumnName)})}"
+                          method="post">
+                        <div class="row">
+                            <th:block th:each="colName : ${ruleSystem.inputColumnList}">
+                                <div class="form-group col">
+                                    <label th:text="${colName.name}"
+                                           th:for="${colName.name}"
+                                           class="col-form-label"></label>
+                                </div>
+                            </th:block>
+                            <div class="form-group col">
+                                <label th:text="${ruleSystem.uniqueOutputColumnName}"
+                                       th:for="${ruleSystem.uniqueOutputColumnName}"
+                                       class="col-form-label"></label>
+                            </div>
+                            <div class="col">
+                                &nbsp;
+                            </div>
+                        </div>
+                        <div class="row">
+                            <th:block th:each="col : ${ruleSystem.inputColumnList}">
+                                <div class="form-group col">
+                                    <input type="text"
+                                           th:field="*{ruleInputs['__${col.name}__']}"
+                                           th:value="*{ruleInputs['__${col.name}__']}"
+                                           class="form-control"
+                                           th:id="*{ruleInputs['__${col.name}__']}" />
+                                </div>
+                            </th:block>
+                            <div class="form-group col">
+                                <input type="text"
+                                       th:value="${ruleToEdit.get(ruleSystem.uniqueOutputColumnName)}"
+                                       class="form-control"
+                                       th:id="${ruleSystem.uniqueOutputColumnName}" />
+                            </div>
+                            <input type="hidden"
+                                   class="form-control"
+                                   th:id="${ruleSystem.uniqueIdColumnName}"
+                                   th:value="${ruleToEdit.get(ruleSystem.uniqueIdColumnName)}" />
+
+                            <div class="col ">
+                                <input type="submit" class="btn btn-primary" value="Save">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

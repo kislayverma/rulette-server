@@ -1,11 +1,7 @@
 package com.github.kislayverma.rulette.rest.rule;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.kislayverma.rulette.RuleSystem;
-import com.github.kislayverma.rulette.core.rule.Rule;
-import com.github.kislayverma.rulette.rest.exception.BadClientException;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemFactory;
 import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,59 +18,50 @@ public class RuleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleController.class);
 
     @Autowired
-    private RuleSystemFactory ruleSystemFactory;
+    private RuleService ruleService;
 
     @GetMapping("/")
     public List<Map<String, String>> getAllRules(@PathVariable String ruleSystemName) {
-        final RuleSystem rs = getRuleSystem(ruleSystemName);
-
-        return TransformerUtil.convertToRawValues(rs, rs.getAllRules());
+        return TransformerUtil.convertToRawValues(
+            ruleService.getRuleSystem(ruleSystemName), ruleService.getAllRules(ruleSystemName));
     }
 
     @GetMapping("/{ruleId}")
     public Map<String, String> getRuleById(@PathVariable String ruleSystemName, @PathVariable String ruleId) {
-        final RuleSystem rs = getRuleSystem(ruleSystemName);
-
-        return TransformerUtil.convertToRawValueMap(rs, rs.getRule(ruleId));
+        return TransformerUtil.convertToRawValueMap(
+            ruleService.getRuleSystem(ruleSystemName), ruleService.getRuleById(ruleSystemName, ruleId));
     }
 
     @PostMapping("/getApplicableRule")
     public Map<String, String> getApplicableRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         try {
-            final RuleSystem rs = getRuleSystem(ruleSystemName);
-
-            return TransformerUtil.convertToRawValueMap(rs, rs.getRule(TransformerUtil.convertJsonToMap(payload)));
-        } catch (IOException ex) {
-            throw new BadClientException("Error in parsing payload", ex);
-        } catch (Exception ex) {
-            throw new BadServerException("Failed to get rule", ex);
+            return TransformerUtil.convertToRawValueMap(
+                ruleService.getRuleSystem(ruleSystemName),
+                ruleService.getApplicableRule(ruleSystemName, TransformerUtil.convertJsonToMap(payload)));
+        } catch (Exception e) {
+            throw new BadServerException("Error loading rule", e);
         }
     }
 
     @PostMapping("/getNextApplicableRule")
     public Map<String, String> getNextApplicableRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         try {
-            final RuleSystem rs = getRuleSystem(ruleSystemName);
-
             return TransformerUtil.convertToRawValueMap(
-                rs, rs.getNextApplicableRule(TransformerUtil.convertJsonToMap(payload)));
-        } catch (IOException ex) {
-            throw new BadClientException("Error in parsing payload", ex);
-        } catch (Exception ex) {
-            throw new BadServerException("Failed to get rule", ex);
+                ruleService.getRuleSystem(ruleSystemName),
+                ruleService.getNextApplicableRule(ruleSystemName, TransformerUtil.convertJsonToMap(payload)));
+        } catch (Exception e) {
+            throw new BadServerException("Error loading next applicable rule", e);
         }
     }
 
     @PostMapping("/")
     public Map<String, String> addRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         try {
-            final RuleSystem rs = getRuleSystem(ruleSystemName);
-
-            return TransformerUtil.convertToRawValueMap(rs, rs.addRule(TransformerUtil.convertJsonToMap(payload)));
-        } catch (IOException ex) {
-            throw new BadClientException("Error in parsing payload", ex);
+            return TransformerUtil.convertToRawValueMap(
+                ruleService.getRuleSystem(ruleSystemName),
+                ruleService.addRule(ruleSystemName, TransformerUtil.convertJsonToMap(payload)));
         } catch (Exception ex) {
-            throw new BadServerException("Failed to get rule", ex);
+            throw new BadServerException("Failed to add rule", ex);
         }
     }
 
@@ -82,21 +69,9 @@ public class RuleController {
     public Map<String, String> updateRule(
         @PathVariable String ruleSystemName, @PathVariable String ruleId, @RequestBody JsonNode payload) {
         try {
-            final RuleSystem rs = getRuleSystem(ruleSystemName);
-            final Rule oldRule = rs.getRule(ruleId);
-            Rule modifiedRule = rs.getRule(ruleId);
-            final Map<String, String> newDataMap = TransformerUtil.convertJsonToMap(payload);
-            newDataMap.entrySet().forEach(e -> {
-                try {
-                    modifiedRule.setColumnData(e.getKey(), e.getValue());
-                } catch (Exception ex) {
-                    throw new BadServerException("Failed to update rule", ex);
-                }
-            });
-
-            return TransformerUtil.convertToRawValueMap(rs, rs.updateRule(oldRule, modifiedRule));
-        } catch (IOException ex) {
-            throw new BadClientException("Error in parsing payload", ex);
+            return TransformerUtil.convertToRawValueMap(
+                ruleService.getRuleSystem(ruleSystemName),
+                ruleService.updateRule(ruleSystemName, ruleId, TransformerUtil.convertJsonToMap(payload)));
         } catch (Exception ex) {
             throw new BadServerException("Failed to update rule", ex);
         }
@@ -105,25 +80,18 @@ public class RuleController {
     @DeleteMapping("/{ruleId}")
     public void deleteRule(@PathVariable String ruleSystemName, @PathVariable String ruleId) {
         try {
-            getRuleSystem(ruleSystemName).deleteRule(ruleId);
+            ruleService.deleteRule(ruleSystemName, ruleId);
         } catch (Exception ex) {
-            throw new BadServerException("Failed to get rule", ex);
+            throw new BadServerException("Failed to delete rule", ex);
         }
     }
 
     @DeleteMapping("/")
     public void deleteRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         try {
-            final RuleSystem rs = getRuleSystem(ruleSystemName);
-            rs.deleteRule(new Rule(rs.getMetaData(), TransformerUtil.convertJsonToMap(payload)));
-        } catch (IOException ex) {
-            throw new BadClientException("Error in parsing payload", ex);
+            ruleService.deleteRule(ruleSystemName, TransformerUtil.convertJsonToMap(payload));
         } catch (Exception ex) {
-            throw new BadServerException("Failed to get rule", ex);
+            throw new BadServerException("Failed to delete rule", ex);
         }
-    }
-
-    private RuleSystem getRuleSystem(final String ruleSystemName) {
-        return ruleSystemFactory.getRuleSystem(ruleSystemName);
     }
 }
