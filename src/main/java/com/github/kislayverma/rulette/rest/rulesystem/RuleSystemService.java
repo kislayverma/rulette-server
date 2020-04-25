@@ -26,7 +26,11 @@ public class RuleSystemService {
             try {
                 metaDataList.add(rs.getMetaData());
             } catch (Exception ex) {
-                throw new BadServerException("Error returning rule system metadata", ex);
+                if (!(ex instanceof RuntimeException)) {
+                    throw new BadServerException("Error returning rule system metadata", ex);
+                } else {
+                    throw (RuntimeException)ex;
+                }
             }
         });
 
@@ -39,7 +43,11 @@ public class RuleSystemService {
         try {
             return getRuleSystem(ruleSystemName).getMetaData();
         } catch (Exception ex) {
-            throw new BadServerException("Error returning rule system metadata", ex);
+            if (!(ex instanceof RuntimeException)) {
+                throw new BadServerException("Error returning rule system metadata", ex);
+            } else {
+                throw (RuntimeException)ex;
+            }
         }
     }
 
@@ -47,7 +55,11 @@ public class RuleSystemService {
         try {
             ruleSystemFactory.reloadRuleSystem(ruleSystemName);
         } catch (Exception ex) {
-            throw new BadServerException("Error returning rule system metadata", ex);
+            if (!(ex instanceof RuntimeException)) {
+                throw new BadServerException("Error reloading rule system", ex);
+            } else {
+                throw (RuntimeException)ex;
+            }
         }
     }
 }

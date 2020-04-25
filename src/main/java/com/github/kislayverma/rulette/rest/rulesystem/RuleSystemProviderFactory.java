@@ -3,6 +3,7 @@ package com.github.kislayverma.rulette.rest.rulesystem;
 import com.github.kislayverma.rulette.core.data.IDataProvider;
 import com.github.kislayverma.rulette.mysql.MysqlDataProvider;
 import com.github.kislayverma.rulette.rest.config.RuleSystemConfig;
+import com.github.kislayverma.rulette.rest.exception.BadClientException;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class RuleSystemProviderFactory {
         if ("mysql".equals(rsConfig.getProviderType())) {
             return buildMySqlProvider(rsConfig);
         } else {
-            throw new UnsupportedOperationException("Provider type " + rsConfig.getProviderType() + " is not supported");
+            throw new BadClientException("Provider type " + rsConfig.getProviderType() + " is not supported");
         }
     }
 

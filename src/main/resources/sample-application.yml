@@ -7,7 +7,7 @@ logging:
 rulesystems:
   configs:
     -   providerType: mysql
-        name: vat_rule_system
+        name: tax_rule_system
         driverClass: com.mysql.jdbc.Driver
         jdbcUrl: jdbc:mysql://localhost:3306/tax
         username: root
