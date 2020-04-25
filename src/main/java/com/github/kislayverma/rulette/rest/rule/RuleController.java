@@ -1,15 +1,15 @@
 package com.github.kislayverma.rulette.rest.rule;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
+import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
 import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -18,25 +18,29 @@ public class RuleController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleController.class);
 
     @Autowired
+    private RuleSystemService ruleSystemService;
+    @Autowired
     private RuleService ruleService;
 
     @GetMapping("/")
-    public List<Map<String, String>> getAllRules(@PathVariable String ruleSystemName) {
-        return TransformerUtil.convertToRawValues(
-            ruleService.getRuleSystem(ruleSystemName), ruleService.getAllRules(ruleSystemName));
+    public PaginatedResult<Rule> getRules(@PathVariable String ruleSystemName,
+                                          @RequestParam(defaultValue = "1") Integer pageNum,
+                                          @RequestParam(defaultValue = "50") Integer pageSize) {
+        return ruleService.getRules(ruleSystemName, pageNum, pageSize);
+
     }
 
     @GetMapping("/{ruleId}")
     public Map<String, String> getRuleById(@PathVariable String ruleSystemName, @PathVariable String ruleId) {
         return TransformerUtil.convertToRawValueMap(
-            ruleService.getRuleSystem(ruleSystemName), ruleService.getRuleById(ruleSystemName, ruleId));
+            ruleSystemService.getRuleSystem(ruleSystemName), ruleService.getRuleById(ruleSystemName, ruleId));
     }
 
     @PostMapping("/getApplicableRule")
     public Map<String, String> getApplicableRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         try {
             return TransformerUtil.convertToRawValueMap(
-                ruleService.getRuleSystem(ruleSystemName),
+                ruleSystemService.getRuleSystem(ruleSystemName),
                 ruleService.getApplicableRule(ruleSystemName, TransformerUtil.convertJsonToMap(payload)));
         } catch (Exception e) {
             throw new BadServerException("Error loading rule", e);
@@ -47,7 +51,7 @@ public class RuleController {
     public Map<String, String> getNextApplicableRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         try {
             return TransformerUtil.convertToRawValueMap(
-                ruleService.getRuleSystem(ruleSystemName),
+                ruleSystemService.getRuleSystem(ruleSystemName),
                 ruleService.getNextApplicableRule(ruleSystemName, TransformerUtil.convertJsonToMap(payload)));
         } catch (Exception e) {
             throw new BadServerException("Error loading next applicable rule", e);
@@ -58,7 +62,7 @@ public class RuleController {
     public Map<String, String> addRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         try {
             return TransformerUtil.convertToRawValueMap(
-                ruleService.getRuleSystem(ruleSystemName),
+                ruleSystemService.getRuleSystem(ruleSystemName),
                 ruleService.addRule(ruleSystemName, TransformerUtil.convertJsonToMap(payload)));
         } catch (Exception ex) {
             throw new BadServerException("Failed to add rule", ex);
@@ -70,7 +74,7 @@ public class RuleController {
         @PathVariable String ruleSystemName, @PathVariable String ruleId, @RequestBody JsonNode payload) {
         try {
             return TransformerUtil.convertToRawValueMap(
-                ruleService.getRuleSystem(ruleSystemName),
+                ruleSystemService.getRuleSystem(ruleSystemName),
                 ruleService.updateRule(ruleSystemName, ruleId, TransformerUtil.convertJsonToMap(payload)));
         } catch (Exception ex) {
             throw new BadServerException("Failed to update rule", ex);

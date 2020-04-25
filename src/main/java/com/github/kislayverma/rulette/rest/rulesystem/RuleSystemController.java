@@ -1,14 +1,11 @@
 package com.github.kislayverma.rulette.rest.rulesystem;
 
-import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
-import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

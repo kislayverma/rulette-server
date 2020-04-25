@@ -11,57 +11,108 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     </head>
     <body>
-        <div class="container-fluid my-2 header navbar-text border-bottom shadow" align="center">
-            <a href = "/ui/"><h1>Rulette Server</h1></a>
+        <div class="container-fluid my-2 navbar-text border-bottom shadow bg-light" align="center">
+            <a href = "/ui/"><h4>Rulette Server</h4></a>
         </div>
 
         <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
 
-        <div class="container-fluid my-2 center-pill">
-            <h4 th:text="${ruleSystem.ruleSystemName}"></h4>
+        <div class="container-fluid my-2">
+            <div th:switch="${rulePage.data}">
+                <div th:case="null">
+                    <div class="float-left">
+                        <h4 th:text="${ruleSystem.ruleSystemName}"></h4>
+                    </div>
+                    <div class="float-right">
+                        No records found!
+                    </div>
+                </div>
+                <div th:case="*">
+                    <div class="float-left">
+                        <h4 th:text="${ruleSystem.ruleSystemName}"></h4>
+                    </div>
+                    <div class="float-right">
+                        <span>
+                            <a th:href="@{/ui/{ruleSystemName}/rules?pageNum={pageNum}&pageSize=50
+                                (ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum - 1})}">
+                                &lt;&lt; Prev
+                            </a>
+                        </span>
+                        |
+                        <span th:text="'Showing page ' + ${rulePage.pageNum} + ' of ' +  ${1 + (rulePage.totalRecordCount / rulePage.pageSize)}"/>
+                        |
+                        <span>
+                            <a th:href="@{/ui/{ruleSystemName}/rules?pageNum={pageNum}&pageSize=50
+                                (ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum + 1})}">
+                                Next &gt;&gt;
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div th:switch="${rules}" class="container-fluid my-2">
-            <h2 th:case="null">No record found !!</h2>
+        <div th:switch="${rulePage.data}" class="container-fluid my-2">
+            <h2 th:case="null"></h2>
 
             <div th:case="*">
-                <table class="table table-striped table-responsive-md">
-                    <thead>
+                <table class="table table-striped table-responsive-md table-bordered table-hover table-sm">
+                    <thead class="thead-dark">
                         <tr>
-                            <th th:text="${ruleSystem.uniqueIdColumnName}"></th>
+                            <th class="text-center" th:text="${ruleSystem.uniqueIdColumnName}"></th>
                             <th:block th:each="column : ${ruleSystem.inputColumnList}">
-                                <th th:text="${column.name}">Header Field</th>
+                                <th class="text-center" th:text="${column.name}"></th>
                             </th:block>
-                            <th th:text="${ruleSystem.uniqueOutputColumnName}"></th>
-                            <th>Edit Rule</th>
-                            <th>Delete Rule</th>
+                            <th class="text-center" th:text="${ruleSystem.uniqueOutputColumnName}"></th>
+                            <th class="text-center">Edit Rule</th>
+                            <th class="text-center">Delete Rule</th>
                         </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="rule : ${rules}">
-                        <td th:text="${rule.get(ruleSystem.uniqueIdColumnName)}"></td>
+                    <tr th:each="rule : ${rulePage.data}">
+                        <td class="text-center" th:text="${rule.getColumnData(ruleSystem.uniqueIdColumnName).rawValue}"></td>
                         <td:block th:each="colName : ${ruleSystem.inputColumnList}">
-                            <td th:text="${rule.get(colName.name)}"></td>
+                            <td class="text-center" th:text="${rule.getColumnData(colName.name).rawValue}"></td>
                         </td:block>
-                        <td th:text="${rule.get(ruleSystem.uniqueOutputColumnName)}"></td>
-                        <td>
+                        <td class="text-center" th:text="${rule.getColumnData(ruleSystem.uniqueOutputColumnName).rawValue}"></td>
+                        <td align="center">
                             <a th:href="@{/ui/edit/{ruleSystemName}/{ruleId}
-                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${rule.get(ruleSystem.uniqueIdColumnName)})}"
-                               class="btn btn-primary">
+                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${rule.id})}"
+                               class="btn btn-primary btn-sm">
                                 <i class="fas fa-user-edit ml-2"></i>
                             </a>
                         </td>
-                        <td>
+                        <td align="center">
                             <a th:href="@{/ui/delete/{ruleSystemName}/{ruleId}
-                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${rule.get(ruleSystem.uniqueIdColumnName)})}"
-                               class="btn btn-primary">
+                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${rule.id})}"
+                               class="btn btn-danger btn-sm">
                                 <i class="fas fa-user-times ml-2"></i>
                             </a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+                <div class="float-right">
+                        <span>
+                            <a th:href="@{/ui/{ruleSystemName}/rules?pageNum={pageNum}&pageSize=50
+                                (ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum - 1})}">
+                                &lt;&lt; Prev
+                            </a>
+                        </span>
+                    |
+                    <span th:text="'Showing page ' + ${rulePage.pageNum} + ' of ' +  ${1 + (rulePage.totalRecordCount / rulePage.pageSize)}"/>
+                    |
+                    <span>
+                            <a th:href="@{/ui/{ruleSystemName}/rules?pageNum={pageNum}&pageSize=50
+                                (ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum + 1})}">
+                                Next &gt;&gt;
+                            </a>
+                        </span>
+                </div>
             </div>
+        </div>
+        <div class="container-fluid my-2 navbar-text border-top bg-light" align="center">
+            <a href="https://github.com/kislayverma/rulette-server">Rulette Server</a>
+            (built under Apache 2.0 License)
         </div>
     </body>
 </html>
-
