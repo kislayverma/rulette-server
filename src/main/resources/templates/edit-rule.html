@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div th:insert="includes/header"/>
+    <div th:insert="~{includes/header :: header}"/>
     <div class="container my-5">
         <h4 th:text="@{Editing rule id {id}(id = ${ruleToEdit.get(ruleSystem.uniqueIdColumnName)})}"></h4>
         <div class="card">
@@ -67,7 +67,8 @@
             </div>
         </div>
     </div>
-    <div th:insert="includes/footer"/>
+
+    <div th:insert="~{includes/footer :: footer}"/>
 </body>
 
 </html>
