@@ -11,9 +11,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     </head>
     <body>
-        <div class="container-fluid my-2 navbar-text border-bottom shadow bg-light" align="center">
-            <a href = "/ui/"><h4>Rulette Server</h4></a>
-        </div>
+        <div th:insert="header"/>
         <div th:switch="${ruleSystems}" class="container-fluid my-2">
             <h2 th:case="null">No record found !!</h2>
 
@@ -50,10 +48,7 @@
                 </table>
             </div>
         </div>
-        <div class="container-fluid my-2 navbar-text border-top bg-light" align="center">
-            <a href="https://github.com/kislayverma/rulette-server">Rulette Server</a>
-            (built under Apache 2.0 License) &copy; Kislay Verma
-        </div>
+        <div th:insert="footer"/>
     </body>
 </html>
 
