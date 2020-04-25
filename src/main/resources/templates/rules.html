@@ -13,6 +13,26 @@
     <body>
         <div th:insert="~{includes/header :: header}"/>
 
+        <div class="card">
+            <div class="card-body">
+                <div class="col">
+                    <form action="#" th:object="${ruleId}"
+                          th:action="@{/ui/{ruleSystemName}(ruleSystemName = ${ruleSystem.ruleSystemName})}">
+                        <div class="row">
+                                <div class="form-group col">
+                                    <label for="ruleId"
+                                           class="col-form-label">Rule Id</label>
+                                    <input type="text"
+                                           id="ruleId"
+                                           name="ruleId"/>
+                                    <input type="submit" class="btn btn-success" value="Search">
+                                </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
 
         <div class="container-fluid my-2">

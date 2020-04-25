@@ -1,13 +1,14 @@
 package com.github.kislayverma.rulette.rest.ui;
 
 import com.github.kislayverma.rulette.RuleSystem;
+import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
 import com.github.kislayverma.rulette.rest.rule.RuleDto;
 import com.github.kislayverma.rulette.rest.rule.RuleService;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
-import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
+import com.github.kislayverma.rulette.rest.utils.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/ui")
 public class ListRulesController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ListRulesController.class);
+    private static final String DEFAULT_PAGE_NUMBER = "1";
+    private static final String DEFAULT_PAGE_SIZE = "50";
 
     @Autowired
     private RuleSystemService ruleSystemService;
@@ -32,16 +36,13 @@ public class ListRulesController {
     @RequestMapping("/{ruleSystemName}/rules")
     public String showRulesForRuleSystem(Model model,
                                             @PathVariable String ruleSystemName,
-                                            @RequestParam(defaultValue = "1") Integer pageNum,
-                                            @RequestParam(defaultValue = "50") Integer pageSize) {
+                                            @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNum,
+                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize) {
         try {
-            final RuleSystem rs = ruleSystemService.getRuleSystem(ruleSystemName);
-            model.addAttribute("ruleSystem", rs.getMetaData());
+            final RuleSystemMetaData rs = ruleSystemService.getRuleSystemMetadata(ruleSystemName);
             PaginatedResult<Rule> rulePage = ruleService.getRules(ruleSystemName, pageNum, pageSize);
 
-            model.addAttribute("rulePage", rulePage);
-            // This is the backing object for the rule evaluation modal
-            model.addAttribute("ruleDto", new RuleDto());
+            populateListRulePageModel(model, rs, rulePage, "");
 
             return "rules";
         } catch (Exception e) {
@@ -49,8 +50,49 @@ public class ListRulesController {
         }
     }
 
+    @RequestMapping("/{ruleSystemName}")
+    public String searchRuleById(
+        Model model,
+        @PathVariable String ruleSystemName,
+        @RequestParam(required = false) String ruleId) {
+        if (ruleId == null || ruleId.trim().isEmpty()) {
+            LOGGER.info("Empty ruleId, so showing all rules...");
+            return "redirect:/ui/" + ruleSystemName + "/rules";
+        }
+
+        final RuleSystemMetaData rs = ruleSystemService.getRuleSystemMetadata(ruleSystemName);
+
+        try {
+
+            LOGGER.info("Searching rule id {} of rule system {}", ruleId, ruleSystemName);
+            final Rule rule = ruleService.getRuleById(ruleSystemName, ruleId);
+
+            PaginatedResult<Rule> rulePage = PaginationUtil.getPaginatedData(
+                Collections.singletonList(rule), Integer.parseInt(DEFAULT_PAGE_NUMBER), Integer.parseInt(DEFAULT_PAGE_NUMBER));
+
+            populateListRulePageModel(model, rs, rulePage, ruleId);
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to get rule by id", e);
+            model.addAttribute("message", "No rule found");
+            model.addAttribute("alertClass", "alert-danger");
+            PaginatedResult<Rule> rulePage = PaginationUtil.getPaginatedData(
+                new ArrayList<>(), Integer.parseInt(DEFAULT_PAGE_NUMBER), Integer.parseInt(DEFAULT_PAGE_NUMBER));
+            populateListRulePageModel(model, rs, rulePage, ruleId);
+        }
+
+        return "rules";
+    }
+
+    private void populateListRulePageModel(Model model, RuleSystemMetaData rs, PaginatedResult<Rule> rulePage, String ruleId) {
+        model.addAttribute("ruleSystem", rs);
+        model.addAttribute("rulePage", rulePage);
+        model.addAttribute("rulePage", rulePage);
+        model.addAttribute("ruleId", ruleId);
+    }
+
     @RequestMapping("/delete/{ruleSystemName}/{ruleId}")
-    public String editRule(
+    public String deleteRule(
         @PathVariable String ruleSystemName,
         @PathVariable String ruleId,
         RedirectAttributes redirectAttributes) {
@@ -64,37 +106,6 @@ public class ListRulesController {
         } catch (Exception e) {
             LOGGER.error("Failed to update error", e);
             redirectAttributes.addFlashAttribute("message", "Failed to delete rule");
-            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
-        }
-
-        return "redirect:/ui/" + ruleSystemName + "/rules";
-    }
-
-    @RequestMapping(value="/eval/{ruleSystemName}", method = RequestMethod.POST)
-    public String showApplicableRule(
-        Model model,
-        @ModelAttribute("ruleDto") RuleDto ruleDto,
-        @PathVariable String ruleSystemName,
-        @RequestParam(defaultValue = "1") Integer pageNum,
-        @RequestParam(defaultValue = "50") Integer pageSize,
-        RedirectAttributes redirectAttributes) {
-        try {
-            LOGGER.info("Evaluating inputs to show applicable rule...");
-            final RuleSystem rs = ruleSystemService.getRuleSystem(ruleSystemName);
-            final Rule rule =
-                ruleService.getApplicableRule(ruleSystemName, ruleDto.getRuleInputs());
-            if (rule != null) {
-                Map<String, String> ruleValueMap = TransformerUtil.convertToRawValueMap(rs, rule);
-                RuleDto dto = new RuleDto();
-                dto.setRuleInputs(ruleValueMap);
-                model.addAttribute("ruleFound", dto);
-            } else {
-                redirectAttributes.addFlashAttribute("message", "No rule found for this input");
-                redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
-            }
-        } catch (Exception e) {
-            LOGGER.error("Failed to update error", e);
-            redirectAttributes.addFlashAttribute("message", "Error occurred : " + e.getMessage());
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
         }
 
