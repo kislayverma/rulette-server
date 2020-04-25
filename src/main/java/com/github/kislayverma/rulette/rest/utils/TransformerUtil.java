@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.rule.Rule;
+import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
+import com.github.kislayverma.rulette.rest.exception.RuleSystemNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,9 +15,12 @@ import java.util.Map;
 
 public class TransformerUtil {
     public static Map<String, String> convertToRawValueMap(final RuleSystem ruleSystem, final Rule rule) {
-        if (ruleSystem == null || rule == null) {
-            throw new IllegalArgumentException("Invalid input in transforming rule to rule DTO");
+        if (ruleSystem == null) {
+            throw new RuleSystemNotFoundException("No rule system defined for transforming rule to Rule DTO");
+        } else if (rule == null) {
+            throw new RuleNotFoundException("No rule defined for transforming to DTO");
         }
+
         final Map<String, String> ruleValues = new HashMap<>();
         ruleSystem.getAllColumnNames()
             .forEach(columnName -> {

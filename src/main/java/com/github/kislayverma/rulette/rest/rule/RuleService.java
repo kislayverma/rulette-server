@@ -2,6 +2,7 @@ package com.github.kislayverma.rulette.rest.rule;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.rule.Rule;
+import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemFactory;
 import com.github.kislayverma.rulette.rest.utils.PaginationUtil;
@@ -23,7 +24,12 @@ public class RuleService {
     }
 
     public Rule getRuleById(String ruleSystemName, String ruleId) {
-        return getRuleSystem(ruleSystemName).getRule(ruleId);
+        Rule rule = getRuleSystem(ruleSystemName).getRule(ruleId);
+        if (rule == null) {
+            throw new RuleNotFoundException("No rule defined for id " + ruleId);
+        }
+
+        return rule;
     }
 
     public Rule getApplicableRule(String ruleSystemName, Map<String, String> inputMap) throws Exception {
@@ -40,8 +46,8 @@ public class RuleService {
 
     public Rule updateRule(String ruleSystemName, String ruleId, Map<String, String> inputMap) throws Exception {
         final RuleSystem rs = getRuleSystem(ruleSystemName);
-        final Rule oldRule = rs.getRule(ruleId);
-        Rule modifiedRule = rs.getRule(ruleId);
+        final Rule oldRule = getRuleById(ruleSystemName, ruleId);
+        Rule modifiedRule = getRuleById(ruleSystemName, ruleId);
         for (Map.Entry<String, String> e : inputMap.entrySet()) {
             modifiedRule = modifiedRule.setColumnData(e.getKey(), e.getValue());
         }
