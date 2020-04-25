@@ -3,8 +3,8 @@ package com.github.kislayverma.rulette.rest.rulesystem;
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.github.kislayverma.rulette.rest.model.PaginatedResult;
+import com.github.kislayverma.rulette.rest.utils.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +13,6 @@ import java.util.List;
 
 @Component
 public class RuleSystemService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RuleSystemService.class);
-
     @Autowired
     private RuleSystemFactory ruleSystemFactory;
 
@@ -22,17 +20,19 @@ public class RuleSystemService {
         return ruleSystemFactory.getRuleSystem(ruleSystemName);
     }
 
-    public List<RuleSystemMetaData> getAllRuleSystemMetaData() {
-        final List<RuleSystemMetaData> output = new ArrayList<>();
+    public PaginatedResult<RuleSystemMetaData> getAllRuleSystemMetaData(int pageNum, int pageSize) {
+        final List<RuleSystemMetaData> metaDataList = new ArrayList<>();
         ruleSystemFactory.getAllRuleSystems().forEach(rs -> {
             try {
-                output.add(rs.getMetaData());
+                metaDataList.add(rs.getMetaData());
             } catch (Exception ex) {
                 throw new BadServerException("Error returning rule system metadata", ex);
             }
         });
 
-        return output;
+        PaginatedResult<RuleSystemMetaData> result = PaginationUtil.getPaginatedData(metaDataList, pageNum, pageSize);
+
+        return result;
     }
 
     public RuleSystemMetaData getRuleSystemMetadata(String ruleSystemName) {

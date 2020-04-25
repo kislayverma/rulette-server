@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.rule;
+package com.github.kislayverma.rulette.rest.model;
 
 import java.io.Serializable;
 import java.util.List;

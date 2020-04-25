@@ -1,6 +1,7 @@
 package com.github.kislayverma.rulette.rest.rulesystem;
 
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
+import com.github.kislayverma.rulette.rest.model.PaginatedResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,9 @@ public class RuleSystemController {
     private RuleSystemService ruleSystemService;
 
     @GetMapping("/")
-    public List<RuleSystemMetaData> getAllRuleSystemMetaData() {
-        return ruleSystemService.getAllRuleSystemMetaData();
+    public PaginatedResult<RuleSystemMetaData> getAllRuleSystemMetaData(@RequestParam(defaultValue = "1") Integer pageNum,
+                                                                        @RequestParam(defaultValue = "50") Integer pageSize) {
+        return ruleSystemService.getAllRuleSystemMetaData(pageNum, pageSize);
     }
 
     @GetMapping("/{ruleSystemName}")
