@@ -68,29 +68,4 @@ public class EvaluateInputsController {
             throw new BadServerException("Error getting rules", e);
         }
     }
-
-    // Refer for details on how to show the success/failure messages :
-    // https://stackoverflow.com/questions/46744586/thymeleaf-show-a-success-message-after-clicking-on-submit-button
-    // https://stackoverflow.com/questions/53683804/how-to-add-success-notification-after-form-submit
-//    @RequestMapping(value="/compute/{ruleSystemName}", method = RequestMethod.POST)
-//    public String saveEditedRule(
-//        @ModelAttribute("ruleDto") RuleDto ruleDto,
-//        @PathVariable String ruleSystemName,
-//        RedirectAttributes redirectAttributes) {
-//        try {
-//            final RuleSystem rs = ruleSystemService.getRuleSystem(ruleSystemName);
-//            final Map<String, String> inputMap = ruleDto.getRuleInputs();
-//
-//            LOGGER.info("Updating rule id {} of rule system {} with data : {}", ruleId, ruleSystemName, inputMap);
-//            ruleService.updateRule(ruleSystemName, ruleId, inputMap);
-//            redirectAttributes.addFlashAttribute("message", "Successfully updated rule!");
-//            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
-//        } catch (Exception e) {
-//            LOGGER.error("Failed to update error", e);
-//            redirectAttributes.addFlashAttribute("message", "Failed to update rule");
-//            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
-//        }
-//
-//        return "redirect:/ui/" + ruleSystemName + "/rules";
-//    }
 }
