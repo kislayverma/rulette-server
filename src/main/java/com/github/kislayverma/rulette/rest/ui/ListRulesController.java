@@ -3,7 +3,7 @@ package com.github.kislayverma.rulette.rest.ui;
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
-import com.github.kislayverma.rulette.rest.rule.PaginatedResult;
+import com.github.kislayverma.rulette.rest.model.PaginatedResult;
 import com.github.kislayverma.rulette.rest.rule.RuleService;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
 import org.slf4j.Logger;

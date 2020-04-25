@@ -100,11 +100,11 @@
                     <span th:text="'Showing page ' + ${rulePage.pageNum} + ' of ' +  ${1 + (rulePage.totalRecordCount / rulePage.pageSize)}"/>
                     |
                     <span>
-                            <a th:href="@{/ui/{ruleSystemName}/rules?pageNum={pageNum}&pageSize=50
-                                (ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum + 1})}">
-                                Next &gt;&gt;
-                            </a>
-                        </span>
+                        <a th:href="@{/ui/{ruleSystemName}/rules?pageNum={pageNum}&pageSize=50
+                            (ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum + 1})}">
+                            Next &gt;&gt;
+                        </a>
+                    </span>
                 </div>
             </div>
         </div>

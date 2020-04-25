@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @RequestMapping("/")
     public String showHome(Model model) {
-        return "redirect:/ui/";
+        return "redirect:/ui";
     }
 }
