@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     </head>
     <body>
-        <div th:insert="header"/>
+        <div th:insert="includes/header"/>
 
         <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
 
@@ -108,6 +108,6 @@
                 </div>
             </div>
         </div>
-        <div th:insert="footer"/>
+        <div th:insert="includes/footer"/>
     </body>
 </html>
