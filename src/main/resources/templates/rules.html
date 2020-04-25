@@ -13,14 +13,15 @@
     <body>
         <div th:insert="~{includes/header :: header}"/>
 
-
         <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
 
         <div class="container-fluid my-2">
             <div th:switch="${rulePage.data}">
                 <div th:case="null">
                     <div class="float-left">
-                        <h4 th:text="${ruleSystem.ruleSystemName}"></h4>
+                        <b th:text="${ruleSystem.ruleSystemName}"></b>
+                        |
+                        <a th:href="@{/ui/evaluate/{ruleSystemName}(ruleSystemName = ${ruleSystem.ruleSystemName})}">Evaluate Inputs</a>
                     </div>
                     <div class="float-right">
                         No records found!
@@ -28,7 +29,9 @@
                 </div>
                 <div th:case="*">
                     <div class="float-left">
-                        <h4 th:text="${ruleSystem.ruleSystemName}"></h4>
+                        <b th:text="${ruleSystem.ruleSystemName}"></b>
+                        |
+                        <a th:href="@{/ui/evaluate/{ruleSystemName}(ruleSystemName = ${ruleSystem.ruleSystemName})}">Evaluate Inputs</a>
                     </div>
                     <div class="float-right">
                         <span>

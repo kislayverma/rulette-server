@@ -1,6 +1,7 @@
 package com.github.kislayverma.rulette.rest.ui;
 
 import com.github.kislayverma.rulette.RuleSystem;
+import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.rule.RuleDto;
 import com.github.kislayverma.rulette.rest.rule.RuleService;
@@ -35,11 +36,12 @@ public class EditRuleController {
         try {
             final RuleSystem rs = ruleSystemService.getRuleSystem(ruleSystemName);
             model.addAttribute("ruleSystem", rs.getMetaData());
-            model.addAttribute(
-                "ruleToEdit", TransformerUtil.convertToRawValueMap(rs, ruleService.getRuleById(ruleSystemName, ruleId)));
+            Map<String, String> ruleValueMap =
+                TransformerUtil.convertToRawValueMap(rs, ruleService.getRuleById(ruleSystemName, ruleId));
+            model.addAttribute("ruleToEdit", ruleValueMap);
 
             RuleDto dto = new RuleDto();
-            dto.setRuleInputs(TransformerUtil.convertToRawValueMap(rs, ruleService.getRuleById(ruleSystemName, ruleId)));
+            dto.setRuleInputs(ruleValueMap);
             model.addAttribute("ruleDto", dto);
 
             return "edit-rule";
@@ -52,7 +54,7 @@ public class EditRuleController {
     // https://stackoverflow.com/questions/46744586/thymeleaf-show-a-success-message-after-clicking-on-submit-button
     // https://stackoverflow.com/questions/53683804/how-to-add-success-notification-after-form-submit
     @RequestMapping(value="/save/{ruleSystemName}/{ruleId}", method = RequestMethod.POST)
-    public String editRule(
+    public String saveEditedRule(
         @ModelAttribute("ruleDto") RuleDto ruleDto,
         @PathVariable String ruleSystemName,
         @PathVariable String ruleId,
