@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <div class="container-fluid my-2 navbar-text border-bottom shadow bg-light" align="center">
-        <a href = "/ui/"><h4>Rulette Server</h4></a>
-    </div>
+    <body>
+        <div th:fragment="header">
+            <div class="container-fluid my-2 navbar-text border-bottom shadow bg-light" align="center">
+                <a href = "/ui/"><h4>Rulette Server</h4></a>
+            </div>
+        </div>
+    </body>
 </html>
