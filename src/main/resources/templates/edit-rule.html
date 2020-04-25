@@ -7,11 +7,10 @@
     <title>Add Employee</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
 </head>
 
 <body>
-    <div th:insert="header"/>
+    <div th:insert="includes/header"/>
     <div class="container my-5">
         <h4 th:text="@{Editing rule id {id}(id = ${ruleToEdit.get(ruleSystem.uniqueIdColumnName)})}"></h4>
         <div class="card">
@@ -68,7 +67,7 @@
             </div>
         </div>
     </div>
-    <div th:insert="footer"/>
+    <div th:insert="includes/footer"/>
 </body>
 
 </html>
