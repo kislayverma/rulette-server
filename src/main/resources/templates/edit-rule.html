@@ -11,9 +11,7 @@
 </head>
 
 <body>
-    <div class="container-fluid my-2 navbar-text border-bottom shadow bg-light" align="center">
-        <a href = "/ui/"><h4>Rulette Server</h4></a>
-    </div>
+    <div th:insert="header"/>
     <div class="container my-5">
         <h4 th:text="@{Editing rule id {id}(id = ${ruleToEdit.get(ruleSystem.uniqueIdColumnName)})}"></h4>
         <div class="card">
@@ -70,10 +68,7 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid my-2 navbar-text border-top bg-light" align="center">
-        <a href="https://github.com/kislayverma/rulette-server">Rulette Server</a>
-        (built under Apache 2.0 License) &copy; Kislay Verma
-    </div>
+    <div th:insert="footer"/>
 </body>
 
 </html>
