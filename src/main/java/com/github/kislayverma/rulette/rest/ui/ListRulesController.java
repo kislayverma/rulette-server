@@ -3,10 +3,9 @@ package com.github.kislayverma.rulette.rest.ui;
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
-import com.github.kislayverma.rulette.rest.rule.RuleDto;
+import com.github.kislayverma.rulette.rest.rule.PaginatedResult;
 import com.github.kislayverma.rulette.rest.rule.RuleService;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
-import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/ui")
@@ -31,17 +26,16 @@ public class ListRulesController {
     private RuleService ruleService;
 
     @RequestMapping("/{ruleSystemName}/rules")
-    public String showAllRulesForRuleSystem(Model model, @PathVariable String ruleSystemName) {
+    public String showRulesForRuleSystem(Model model,
+                                            @PathVariable String ruleSystemName,
+                                            @RequestParam(defaultValue = "1") Integer pageNum,
+                                            @RequestParam(defaultValue = "50") Integer pageSize) {
         try {
             final RuleSystem rs = ruleSystemService.getRuleSystem(ruleSystemName);
             model.addAttribute("ruleSystem", rs.getMetaData());
-            List<Rule> rules = ruleService.getAllRules(ruleSystemName);
+            PaginatedResult<Rule> rulePage = ruleService.getRules(ruleSystemName, pageNum, pageSize);
 
-            Collections.sort(rules, (r1, r2) -> {
-                return Integer.valueOf(r1.getId()).compareTo(Integer.valueOf(r2.getId()));
-            });
-            model.addAttribute(
-                "rules", TransformerUtil.convertToRawValues(rs, rules));
+            model.addAttribute("rulePage", rulePage);
 
             return "rules";
         } catch (Exception e) {
