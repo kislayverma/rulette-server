@@ -2,3 +2,5 @@
 .idea/
 *.iml
 build/
+src/main/resources/application.yml
+
