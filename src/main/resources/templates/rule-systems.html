@@ -7,6 +7,7 @@
         <title>Rulette Server</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
     </head>
     <body>
         <div th:insert="~{includes/header :: header}"/>
@@ -57,6 +58,7 @@
                         <th class="text-center">Rule Inputs</th>
                         <th class="text-center">Output Column</th>
                         <th class="text-center">View Rules</th>
+                        <th class="text-center">Reload</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -77,6 +79,12 @@
                         <td class="text-center">
                             <a th:href="@{/ui/{ruleSystemName}/rules(ruleSystemName = ${ruleSystem.ruleSystemName})}">
                                 View Rules
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a th:href="@{/ui/{ruleSystemName}/reload(ruleSystemName=${ruleSystem.ruleSystemName})}"
+                               class="btn btn-primary btn-sm">
+                                <i class="fas fa-redo ml-2"></i>
                             </a>
                         </td>
                     </tr>
