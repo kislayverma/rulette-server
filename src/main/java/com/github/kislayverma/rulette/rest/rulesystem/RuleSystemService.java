@@ -53,7 +53,7 @@ public class RuleSystemService {
 
     public void reload(String ruleSystemName) {
         try {
-            ruleSystemFactory.reloadRuleSystem(ruleSystemName);
+            getRuleSystem(ruleSystemName).reload();
         } catch (Exception ex) {
             if (!(ex instanceof RuntimeException)) {
                 throw new BadServerException("Error reloading rule system", ex);
