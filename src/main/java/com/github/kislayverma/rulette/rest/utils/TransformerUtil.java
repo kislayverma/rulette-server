@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kislayverma.rulette.RuleSystem;
+import com.github.kislayverma.rulette.core.metadata.RuleInputMetaData;
 import com.github.kislayverma.rulette.core.rule.Rule;
+import com.github.kislayverma.rulette.core.ruleinput.type.RuleInputType;
 import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
 import com.github.kislayverma.rulette.rest.exception.RuleSystemNotFoundException;
 
@@ -14,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 public class TransformerUtil {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     public static Map<String, String> convertToRawValueMap(final RuleSystem ruleSystem, final Rule rule) {
         if (ruleSystem == null) {
             throw new RuleSystemNotFoundException("No rule system defined for transforming rule to Rule DTO");
@@ -41,16 +45,31 @@ public class TransformerUtil {
         return output;
     }
 
-    public static Map<String, String> convertJsonToMap(JsonNode criteria) {
-        ObjectMapper mapper = new ObjectMapper();
+    public static RuleInputMetaData convertJsonToRuleInputMetadata(JsonNode jsonData) {
+        Map<String, String> intputMap = convertJsonToMap(jsonData);
+        String name = intputMap.get("name");
+        int priority= Integer.parseInt(intputMap.get("priority"));
+        RuleInputType inputType = RuleInputType.valueOf(intputMap.get("ruleInputType"));
+        String dataType = intputMap.get("dataType");
+        String rangeLowerBoundFieldName = intputMap.get("rangeLowerBoundFieldName");
+        String rangeUpperBoundFieldName = intputMap.get("rangeUpperBoundFieldName");
 
+        return new RuleInputMetaData(
+            name, priority, inputType, dataType, rangeLowerBoundFieldName, rangeUpperBoundFieldName);
+    }
+
+    public static Map<String, String> convertJsonToMap(JsonNode jsonData) {
         Map<String, String> map = new HashMap<>();
         Map<String, Object> objMap =
-            mapper.convertValue(criteria, new TypeReference<Map<String, Object>>(){});
+            OBJECT_MAPPER.convertValue(jsonData, new TypeReference<Map<String, Object>>(){});
 
-        objMap.entrySet().stream().forEach((entry) -> {
-            map.put(entry.getKey(), (String) entry.getValue());
-        });
+        objMap.entrySet()
+            .stream()
+            .forEach(entry -> {
+                if (entry.getValue() != null) {
+                    map.put(entry.getKey(), (String) entry.getValue().toString());
+                }
+            });
 
         return map;
     }
