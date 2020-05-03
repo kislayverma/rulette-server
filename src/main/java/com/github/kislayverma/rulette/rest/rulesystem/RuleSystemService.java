@@ -1,6 +1,7 @@
 package com.github.kislayverma.rulette.rest.rulesystem;
 
 import com.github.kislayverma.rulette.RuleSystem;
+import com.github.kislayverma.rulette.core.exception.RuleConflictException;
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
@@ -54,12 +55,8 @@ public class RuleSystemService {
     public void reload(String ruleSystemName) {
         try {
             getRuleSystem(ruleSystemName).reload();
-        } catch (Exception ex) {
-            if (!(ex instanceof RuntimeException)) {
-                throw new BadServerException("Error reloading rule system", ex);
-            } else {
-                throw (RuntimeException)ex;
-            }
+        } catch (RuleConflictException ex) {
+            throw new BadServerException("Error reloading rule system", ex);
         }
     }
 }
