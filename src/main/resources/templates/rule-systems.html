@@ -12,6 +12,8 @@
     <body>
         <div th:insert="~{includes/header :: header}"/>
 
+        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
+
         <div class="container-fluid my-2">
             <div th:switch="${ruleSystemPage.data}">
                 <div th:case="null">

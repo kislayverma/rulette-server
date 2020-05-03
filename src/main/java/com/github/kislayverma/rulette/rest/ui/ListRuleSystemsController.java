@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/ui")
@@ -27,9 +28,17 @@ public class ListRuleSystemsController {
     }
 
     @RequestMapping("/{ruleSystemName}/reload")
-    public String reloadRuleSystem(Model model, @PathVariable String ruleSystemName) {
-        LOGGER.info("Reloading rule system {}", ruleSystemName);
-        ruleSystemService.reload(ruleSystemName);
+    public String reloadRuleSystem(Model model, @PathVariable String ruleSystemName, RedirectAttributes redirectAttributes) {
+        try {
+            LOGGER.info("Reloading rule system {}", ruleSystemName);
+            ruleSystemService.reload(ruleSystemName);
+            redirectAttributes.addFlashAttribute("message", "Successfully reloaded " + ruleSystemName);
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message", "Failed to reload " + ruleSystemName + " : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+        }
+
         return "redirect:/ui";
     }
 }

@@ -54,6 +54,11 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a th:href="@{/ui/{ruleSystemName}/ruleinput/{ruleInputName}/delete
+                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleInputName=${column.name})}"
+                               class="btn btn-danger">
+                                <i class="fas fa-user-times ml-2">Delete</i>
+                            </a>
                         </div>
                     </div>
                 </div>
