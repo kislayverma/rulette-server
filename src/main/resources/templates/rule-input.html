@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Add Employee</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    </head>
+
+    <body>
+        <div th:insert="~{includes/header :: header}"/>
+
+        <div class="container my-5">
+            <h4 th:text="@{Adding rule input to {ruleSystemName}(ruleSystemName = ${ruleSystem.ruleSystemName})}"></h4>
+            <div class="card">
+
+                <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
+
+                <div class="card-body">
+                    <div class="col">
+                        <form action="#" th:object="${ruleInputToAdd}"
+                              th:action="@{/ui/{ruleSystemName}/ruleinput/save(ruleSystemName = ${ruleSystem.ruleSystemName})}"
+                              method="post">
+                            <table class="table table-striped table-responsive-md table-bordered table-hover table-sm">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center">Property</th>
+                                    <th class="text-center">Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="name">Name</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" th:id="name"
+                                               th:field="*{name}" th:value="*{name}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="priority">Priority</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" th:id="priority"
+                                               th:field="*{priority}" th:value="*{priority}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="ruleInputType">Input Type</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" th:id="ruleInputType"
+                                               th:field="*{ruleInputType}" th:value="*{ruleInputType}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="datatype">Data Type</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" th:id="datatype"
+                                               th:field="*{dataType}" th:value="*{dataType}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label for="rangeLowerBoundFieldName">Range Lower Bound Field Name</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" id="rangeLowerBoundFieldName"
+                                               th:field="*{rangeLowerBoundFieldName}" th:value="*{rangeLowerBoundFieldName}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="rangeUpperBoundFieldName">Range Upper Bound Field Name</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" th:id="rangeUpperBoundFieldName"
+                                               th:field="*{rangeUpperBoundFieldName}" th:value="*{rangeUpperBoundFieldName}"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div align="right">
+                                <input type="submit" class="btn btn-success" value="Save">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:insert="~{includes/footer :: footer}"/>
+    </body>
+
+</html>
