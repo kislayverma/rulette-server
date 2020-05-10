@@ -61,6 +61,7 @@
                         <th class="text-center">Output Column</th>
                         <th class="text-center">View Rules</th>
                         <th class="text-center">Reload</th>
+                        <th class="text-center">Delete</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -92,6 +93,12 @@
                             <a th:href="@{/ui/{ruleSystemName}/reload(ruleSystemName=${ruleSystem.ruleSystemName})}"
                                class="btn btn-primary btn-sm">
                                 <i class="fas fa-redo ml-2"></i>
+                            </a>
+                        </td>
+                        <td align="center">
+                            <a th:href="@{/ui/{ruleSystemName}/delete(ruleSystemName=${ruleSystem.ruleSystemName})}"
+                               class="btn btn-danger btn-sm">
+                                <i class="fas fa-user-times ml-2"></i>
                             </a>
                         </td>
                     </tr>

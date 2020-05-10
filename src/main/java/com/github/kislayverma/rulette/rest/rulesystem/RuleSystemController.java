@@ -1,6 +1,7 @@
 package com.github.kislayverma.rulette.rest.rulesystem;
 
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
+import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,5 +32,10 @@ public class RuleSystemController {
     @PutMapping("/{ruleSystemName}/reload")
     public void reload(@PathVariable String ruleSystemName) {
         ruleSystemService.reload(ruleSystemName);
+    }
+
+    @DeleteMapping("/{ruleSystemName}")
+    public void deleteRule(@PathVariable String ruleSystemName, @PathVariable String ruleId) {
+        ruleSystemService.deleteRuleSystem(ruleSystemName);
     }
 }
