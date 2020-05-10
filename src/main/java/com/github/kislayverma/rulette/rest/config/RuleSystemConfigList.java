@@ -6,20 +6,30 @@ import java.util.List;
 
 @ConfigurationProperties(prefix = "rulesystems")
 public class RuleSystemConfigList {
-    private List<RuleSystemConfig> configs;
-
-    public List<RuleSystemConfig> getConfigs() {
-        return configs;
-    }
-
-    public void setConfigs(List<RuleSystemConfig> configs) {
-        this.configs = configs;
-    }
+    private List<RuleSystemConfigDto> systems;
+    private List<DataProviderConfigDto> dataproviders;
 
     @Override
     public String toString() {
         return "RuleSystemConfigList{" +
-            "configs=" + configs +
+            "systems=" + systems +
+            ", dataproviders=" + dataproviders +
             '}';
+    }
+
+    public List<RuleSystemConfigDto> getSystems() {
+        return systems;
+    }
+
+    public void setSystems(List<RuleSystemConfigDto> systems) {
+        this.systems = systems;
+    }
+
+    public List<DataProviderConfigDto> getDataproviders() {
+        return dataproviders;
+    }
+
+    public void setDataproviders(List<DataProviderConfigDto> dataproviders) {
+        this.dataproviders = dataproviders;
     }
 }
