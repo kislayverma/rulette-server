@@ -1,8 +1,8 @@
-package com.github.kislayverma.rulette.rest.config;
+package com.github.kislayverma.rulette.rest.provider;
 
-public class RuleSystemConfig {
-    private String providerType;
+public class DataProviderConfig {
     private String name;
+    private DataProviderType providerType;
     private String driverClass;
     private String jdbcUrl;
     private String username;
@@ -15,14 +15,13 @@ public class RuleSystemConfig {
 
     @Override
     public String toString() {
-        return "RuleSystemConfig{" +
-            "providerType='" + providerType + '\'' +
-            ", name='" + name + '\'' +
+        return "DataProviderConfigDto{" +
+            "name='" + name + '\'' +
+            ", providerType='" + providerType + '\'' +
             ", driverClass='" + driverClass + '\'' +
             ", jdbcUrl='" + jdbcUrl + '\'' +
             ", username='" + username + '\'' +
             ", password='" + password + '\'' +
-            ", acquireIncrement=" + acquireIncrement +
             ", initialPoolSize=" + initialPoolSize +
             ", maxPoolSize=" + maxPoolSize +
             ", minPoolSize=" + minPoolSize +
@@ -31,22 +30,20 @@ public class RuleSystemConfig {
             '}';
     }
 
-    private Integer acquireIncrement;
-
-    public String getProviderType() {
-        return providerType;
-    }
-
-    public void setProviderType(String providerType) {
-        this.providerType = providerType;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public DataProviderType getProviderType() {
+        return providerType;
+    }
+
+    public void setProviderType(DataProviderType providerType) {
+        this.providerType = providerType;
     }
 
     public String getDriverClass() {
@@ -79,14 +76,6 @@ public class RuleSystemConfig {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Integer getAcquireIncrement() {
-        return acquireIncrement;
-    }
-
-    public void setAcquireIncrement(Integer acquireIncrement) {
-        this.acquireIncrement = acquireIncrement;
     }
 
     public Integer getInitialPoolSize() {
