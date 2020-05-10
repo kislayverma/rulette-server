@@ -1,5 +1,6 @@
 package com.github.kislayverma.rulette.rest.ui;
 
+import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,24 @@ public class ListRuleSystemsController {
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "Failed to reload " + ruleSystemName + " : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+        }
+
+        return "redirect:/ui";
+    }
+
+    @RequestMapping("/{ruleSystemName}/delete")
+    public String deleteRule(
+        @PathVariable String ruleSystemName,
+        RedirectAttributes redirectAttributes) {
+        try {
+            LOGGER.info("Deleting rule system {}", ruleSystemName);
+            ruleSystemService.deleteRuleSystem(ruleSystemName);
+            redirectAttributes.addFlashAttribute("message", "Successfully deleted rule system!");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        } catch (Exception e) {
+            LOGGER.error("Failed to delete rule system", e);
+            redirectAttributes.addFlashAttribute("message", "Failed to delete rule system");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
         }
 

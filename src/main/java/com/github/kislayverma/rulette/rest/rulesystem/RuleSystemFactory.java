@@ -58,6 +58,10 @@ public class RuleSystemFactory {
         }
     }
 
+    public void deleteRuleSystem(String ruleSystemName) {
+        RULE_SYSTEM_MAP.remove(ruleSystemName);
+    }
+
     private RuleSystem buildRuleSystem(String ruleSystemName) {
         try {
             return new RuleSystem(ruleSystemName, providerService.getProviderForRuleSystem(ruleSystemName));
