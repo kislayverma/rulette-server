@@ -1,10 +1,10 @@
 package com.github.kislayverma.rulette.rest.rulesystem;
 
 import com.github.kislayverma.rulette.RuleSystem;
-import com.github.kislayverma.rulette.rest.config.RuleSystemConfig;
 import com.github.kislayverma.rulette.rest.config.RuleSystemConfigList;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.exception.RuleSystemNotFoundException;
+import com.github.kislayverma.rulette.rest.provider.DataProviderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +25,14 @@ public class RuleSystemFactory {
     private RuleSystemConfigList ruleSystemConfigList;
 
     @Autowired
-    private RuleSystemProviderFactory providerFactory;
+    private DataProviderService providerService;
 
     private final Map<String, RuleSystem> RULE_SYSTEM_MAP = new ConcurrentHashMap<>();
 
     @PostConstruct
     public synchronized void init() {
         LOGGER.info("Loading rule systems...");
-        ruleSystemConfigList.getConfigs()
-            .forEach(config -> {
-                loadRuleSystem(config.getName(), config);
-            });
+        ruleSystemConfigList.getSystems().forEach(config -> loadRuleSystem(config.getName()));
     }
 
     public List<RuleSystem> getAllRuleSystems() {
@@ -50,23 +47,20 @@ public class RuleSystemFactory {
     }
 
     public synchronized void reloadRuleSystem(String ruleSystemName) {
-        RuleSystemConfig config = getConfig(ruleSystemName).orElseThrow(() -> {
-            return new RuleSystemNotFoundException("Rule system with name " + ruleSystemName + " not found");
-        });
-        loadRuleSystem(ruleSystemName, config);
+        loadRuleSystem(ruleSystemName);
     }
 
-    private synchronized void loadRuleSystem(String ruleSystemName, RuleSystemConfig config) {
+    private synchronized void loadRuleSystem(String ruleSystemName) {
         try {
-            RULE_SYSTEM_MAP.put(ruleSystemName, buildRuleSystem(ruleSystemName, config));
+            RULE_SYSTEM_MAP.put(ruleSystemName, buildRuleSystem(ruleSystemName));
         } catch (Exception e) {
             throw new BadServerException("Rule System with name " + ruleSystemName + " could not be loaded", e);
         }
     }
 
-    private RuleSystem buildRuleSystem(String ruleSystemName, RuleSystemConfig config) {
+    private RuleSystem buildRuleSystem(String ruleSystemName) {
         try {
-            return new RuleSystem(ruleSystemName, providerFactory.getProvider(config));
+            return new RuleSystem(ruleSystemName, providerService.getProviderForRuleSystem(ruleSystemName));
         } catch (Exception e) {
             throw new BadServerException("Rule System with name " + ruleSystemName + " could not be loaded", e);
         }
@@ -77,14 +71,5 @@ public class RuleSystemFactory {
             throw new RuntimeException("Rule system name not provided");
         }
         return Optional.ofNullable(RULE_SYSTEM_MAP.get(ruleSystemName));
-    }
-
-    private Optional<RuleSystemConfig> getConfig(String ruleSystemName) {
-        for (RuleSystemConfig config : ruleSystemConfigList.getConfigs()) {
-            if (ruleSystemName.equals(config.getName())) {
-                return Optional.of(config);
-            }
-        }
-        return Optional.empty();
     }
 }
