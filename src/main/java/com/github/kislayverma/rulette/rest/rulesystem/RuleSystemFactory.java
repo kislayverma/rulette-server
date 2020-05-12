@@ -22,17 +22,18 @@ public class RuleSystemFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleSystemFactory.class);
 
     @Autowired
-    private RuleSystemConfigList ruleSystemConfigList;
-
-    @Autowired
     private DataProviderService providerService;
 
     private final Map<String, RuleSystem> RULE_SYSTEM_MAP = new ConcurrentHashMap<>();
 
     @PostConstruct
     public synchronized void init() {
-        LOGGER.info("Loading rule systems...");
-        ruleSystemConfigList.getSystems().forEach(config -> loadRuleSystem(config.getName()));
+        LOGGER.info("Loading all rule systems from all providers...");
+        providerService.getAllProviderConfigs()
+            .stream()
+            .map(providerConfig -> providerService.getProvider(providerConfig.getName()))
+            .flatMap(provider -> provider.getAllRuleSystemMetaData().stream())
+            .forEach(ruleSystemMetaData -> loadRuleSystem(ruleSystemMetaData.getRuleSystemName()));
     }
 
     public List<RuleSystem> getAllRuleSystems() {
