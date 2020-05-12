@@ -6,6 +6,8 @@ import com.github.kislayverma.rulette.rest.config.RuleSystemConfigList;
 import com.github.kislayverma.rulette.rest.exception.BadClientException;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.exception.ProviderNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,8 @@ import java.util.*;
 @Component
 public class DataProviderFactory {
 
+    private  static final Logger LOGGER = LoggerFactory.getLogger(DataProviderFactory.class);
+
     @Autowired
     private RuleSystemConfigList ruleSystemConfigList;
 
@@ -24,6 +28,7 @@ public class DataProviderFactory {
 
     @PostConstruct
     public final void init() {
+        LOGGER.info("Loading all data provider configurations from application config file");
         ruleSystemConfigList.getDataproviders()
             .stream()
             .map(dto -> {

@@ -40,11 +40,15 @@ public class DataProviderService {
 
     @PostConstruct
     public final void init() {
-        ruleSystemConfigList.getSystems().stream().forEach(config -> {
-            IDataProvider provider = providerFactory.getProvider(config.getProvider());
-            ruleSystemProviderMap.put(config.getName(), provider);
-            providerNameProviderMap.put(config.getProvider(), provider);
-            ruleSystemProviderNameMap.put(config.getName(), config.getProvider());
+        providerFactory.getAllProviderConfigs().stream().forEach(providerConfig -> {
+            IDataProvider provider = providerFactory.getProvider(providerConfig.getName());
+            providerNameProviderMap.put(providerConfig.getName(), provider);
+
+            List<RuleSystemMetaData> allRuleSystems = provider.getAllRuleSystemMetaData();
+            for (RuleSystemMetaData ruleSystem : allRuleSystems) {
+                ruleSystemProviderMap.put(ruleSystem.getRuleSystemName(), provider);
+                ruleSystemProviderNameMap.put(ruleSystem.getRuleSystemName(), providerConfig.getName());
+            }
         });
     }
 
