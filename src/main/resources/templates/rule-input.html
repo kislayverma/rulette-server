@@ -54,8 +54,10 @@
                                         <label th:for="ruleInputType">Input Type</label>
                                     </td>
                                     <td class="text-center">
-                                        <input type="text" class="form-control" th:id="ruleInputType"
-                                               th:field="*{ruleInputType}" th:value="*{ruleInputType}"/>
+                                        <select class="form-control" th:id="ruleInputType" th:field="*{ruleInputType}">
+                                            <option th:value="'VALUE'" th:text="VALUE"></option>
+                                            <option th:value="'RANGE'" th:text="RANGE"></option>
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr>
@@ -63,8 +65,11 @@
                                         <label th:for="datatype">Data Type</label>
                                     </td>
                                     <td class="text-center">
-                                        <input type="text" class="form-control" th:id="datatype"
-                                               th:field="*{dataType}" th:value="*{dataType}"/>
+                                        <select class="form-control" th:id="datatype" th:field="*{dataType}">
+                                            <option th:value="'STRING'" th:text="STRING"></option>
+                                            <option th:value="'NUMBER'" th:text="NUMBER"></option>
+                                            <option th:value="'DATE'" th:text="DATE"></option>
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr>

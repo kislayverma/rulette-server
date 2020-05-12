@@ -1,10 +1,8 @@
 package com.github.kislayverma.rulette.rest.ui;
 
-import com.github.kislayverma.rulette.RuleSystem;
-import com.github.kislayverma.rulette.core.metadata.RuleInputMetaData;
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
-import com.github.kislayverma.rulette.rest.provider.DataProviderConfig;
-import com.github.kislayverma.rulette.rest.ruleinput.RuleInputDto;
+import com.github.kislayverma.rulette.rest.model.PaginatedResult;
+import com.github.kislayverma.rulette.rest.provider.DataProviderService;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemMetadataDto;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
 import org.slf4j.Logger;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/ui")
@@ -24,12 +24,36 @@ public class ListRuleSystemsController {
 
     @Autowired
     private RuleSystemService ruleSystemService;
+    @Autowired
+    private DataProviderService dataProviderService;
 
     @RequestMapping("")
     public String showAllRuleSystems(Model model,
                                     @RequestParam(defaultValue = "1") Integer pageNum,
                                     @RequestParam(defaultValue = "50") Integer pageSize) {
-        model.addAttribute("ruleSystemPage", ruleSystemService.getAllRuleSystemMetaData(pageNum, pageSize));
+        PaginatedResult<RuleSystemMetaData> metadata = ruleSystemService.getAllRuleSystemMetaData(pageNum, pageSize);
+
+        List<RuleSystemMetadataDto> dtoList =
+            metadata
+                .getData()
+                .stream()
+                .map(rsmd ->{
+                    RuleSystemMetadataDto dto = new RuleSystemMetadataDto();
+                    dto.setRuleSystemName(rsmd.getRuleSystemName());
+                    dto.setProviderName(dataProviderService.getProviderConfigForRuleSystem(rsmd.getRuleSystemName()).getName());
+                    dto.setInputColumnList(rsmd.getInputColumnList());
+                    dto.setTableName(rsmd.getTableName());
+                    dto.setUniqueIdColumnName(rsmd.getUniqueIdColumnName());
+                    dto.setUniqueOutputColumnName(rsmd.getUniqueOutputColumnName());
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
+        PaginatedResult<RuleSystemMetadataDto> dtoPage = new PaginatedResult<>(
+            dtoList, pageNum, pageSize, metadata.getTotalRecordCount(), metadata.isHasNext(), metadata.isHasPrev());
+
+        model.addAttribute("ruleSystemPage", dtoPage);
+
         return "rule-systems";
     }
 
@@ -50,7 +74,7 @@ public class ListRuleSystemsController {
     }
 
     @RequestMapping("/{ruleSystemName}/delete")
-    public String deleteRule(
+    public String deleteRuleSystem(
         @PathVariable String ruleSystemName,
         RedirectAttributes redirectAttributes) {
         try {
@@ -71,6 +95,7 @@ public class ListRuleSystemsController {
     public String showAddRuleSystem(Model model) {
         RuleSystemMetadataDto ruleSystemToAdd = new RuleSystemMetadataDto();
         model.addAttribute("ruleSystemToAdd", ruleSystemToAdd);
+        model.addAttribute("dataProviders", dataProviderService.getAllProviderConfigs());
 
         return "add-rule-system";
     }
