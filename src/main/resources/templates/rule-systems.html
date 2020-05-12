@@ -59,6 +59,7 @@
                     <thead class="thead-dark">
                     <tr>
                         <th class="text-center">Name</th>
+                        <th class="text-center">Provider Name</th>
                         <th class="text-center">Table Name</th>
                         <th class="text-center">Unique Id Column</th>
                         <th class="text-center">Rule Inputs</th>
@@ -71,6 +72,7 @@
                     <tbody>
                     <tr th:each="ruleSystem : ${ruleSystemPage.data}">
                         <td class="text-center" th:text="${ruleSystem.ruleSystemName}"></td>
+                        <td class="text-center" th:text="${ruleSystem.providerName}"></td>
                         <td class="text-center" th:text="${ruleSystem.tableName}"></td>
                         <td class="text-center" th:text="${ruleSystem.uniqueIdColumnName}"></td>
                         <td class="text-center">
