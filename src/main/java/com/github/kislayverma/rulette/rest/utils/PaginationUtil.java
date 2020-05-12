@@ -21,11 +21,8 @@ public class PaginationUtil {
             boolean hasNext = (startingIndex + pageSize) < data.size() - 1;
             boolean hasPrev  = startingIndex > 0;
             int toIndex = Math.min((startingIndex + 1) * pageSize, data.size() - 1);
-            if (toIndex == startingIndex) {
-                toIndex++;
-            }
             return new PaginatedResult<>(
-                data.subList(startingIndex, toIndex),
+                data.subList(startingIndex, toIndex + 1),
                 pageNum,
                 pageSize,
                 data.size(),

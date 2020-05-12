@@ -4,14 +4,14 @@
         <!-- Modal for showing rule input column details -->
         <div th:fragment="rule-input-modal">
             <div class="modal"
-                 th:id="'ruleInputModal-' + ${column.name}"
+                 th:id="'ruleInputModal-' + ${ruleSystem.ruleSystemName} + ${column.name}"
                  tabindex="-1"
                  role="dialog"
-                 aria-labelledby="'ruleInputModal-' + [[${column.name}]]Label" aria-hidden="true">
+                 aria-labelledby="'ruleInputModal-' + ${ruleSystem.ruleSystemName} + [[${column.name}]]Label" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" th:id="'ruleInputModal-' + ${column.name} + 'Label'">Rule Input Properties</h5>
+                            <h5 class="modal-title" th:id="'ruleInputModal-' + ${ruleSystem.ruleSystemName} + ${column.name} + 'Label'">Rule Input Properties</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
