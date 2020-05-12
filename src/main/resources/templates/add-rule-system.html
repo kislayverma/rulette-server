@@ -54,8 +54,11 @@
                                         <label th:for="providerName">Provider</label>
                                     </td>
                                     <td class="text-center">
-                                        <input type="text" class="form-control" id="providerName"
-                                               th:field="*{providerName}" th:value="*{providerName}"/>
+                                        <select class="form-control" id="providerName" th:field="*{providerName}">
+                                            <option th:each="provider : ${dataProviders}"
+                                                    th:value="${provider.name}" th:text="${provider.name}">
+                                            </option>
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr>
