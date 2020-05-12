@@ -1,8 +1,12 @@
 package com.github.kislayverma.rulette.rest.provider;
 
+import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.data.IDataProvider;
+import com.github.kislayverma.rulette.core.exception.RuleConflictException;
+import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.rest.config.RuleSystemConfigList;
 import com.github.kislayverma.rulette.rest.exception.BadClientException;
+import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.exception.ProviderNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +34,16 @@ public class DataProviderService {
 
     private final Map<String, IDataProvider> ruleSystemProviderMap = new HashMap<>();
 
+    private final Map<String, IDataProvider> providerNameProviderMap = new HashMap<>();
+
     private final Map<String, String> ruleSystemProviderNameMap = new HashMap<>();
 
     @PostConstruct
     public final void init() {
         ruleSystemConfigList.getSystems().stream().forEach(config -> {
-            ruleSystemProviderMap.put(config.getName(), providerFactory.getProvider(config.getProvider()));
+            IDataProvider provider = providerFactory.getProvider(config.getProvider());
+            ruleSystemProviderMap.put(config.getName(), provider);
+            providerNameProviderMap.put(config.getProvider(), provider);
             ruleSystemProviderNameMap.put(config.getName(), config.getProvider());
         });
     }
@@ -63,6 +71,34 @@ public class DataProviderService {
         }
 
         return providerFactory.getProviderConfig(providerName);
+    }
+
+    public void insertRuleSystemMetadata(RuleSystemMetaData ruleSystemMetaData, String providerName) {
+        IDataProvider provider = getProvider(providerName);
+        if (provider == null) {
+            throw new BadClientException("Invalid provider name");
+        }
+        provider.createRuleSystem(ruleSystemMetaData);
+        this.ruleSystemProviderMap.put(ruleSystemMetaData.getRuleSystemName(), provider);
+        this.ruleSystemProviderNameMap.put(ruleSystemMetaData.getRuleSystemName(), providerName);
+    }
+
+    public void deleteRuleSystemMetadata(String ruleSystemName) {
+        IDataProvider provider = getProviderForRuleSystem(ruleSystemName);
+        if (provider == null) {
+            throw new BadClientException("Invalid rule system name");
+        }
+        provider.deleteRuleSystem(ruleSystemName);
+        this.ruleSystemProviderMap.remove(ruleSystemName);
+        this.ruleSystemProviderNameMap.remove(ruleSystemName);
+    }
+
+    public IDataProvider getProvider(String providerName) {
+        if (providerName == null || providerName.trim().isEmpty()) {
+            throw new BadClientException("No provider name given to load provider");
+        }
+
+        return providerNameProviderMap.get(providerName);
     }
 
     public IDataProvider getProviderForRuleSystem(String ruleSystemName) {

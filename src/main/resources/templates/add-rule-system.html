@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Add Employee</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    </head>
+
+    <body>
+        <div th:insert="~{includes/header :: header}"/>
+
+        <div class="container my-5">
+            <h4>Create new rule system</h4>
+            <div class="card">
+
+                <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"/>
+
+                <div class="card-body">
+                    <div class="col">
+                        <form th:object="${ruleSystemToAdd}"
+                              action="/ui/rulesystem/save"
+                              method="post">
+                            <table class="table table-striped table-responsive-md table-bordered table-hover table-sm">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center">Property</th>
+                                    <th class="text-center">Value</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="ruleSystemName">Name</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" id="ruleSystemName"
+                                               th:field="*{ruleSystemName}" th:value="*{ruleSystemName}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="tableName">Table Name</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" id="tableName"
+                                               th:field="*{tableName}" th:value="*{tableName}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="providerName">Provider</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" id="providerName"
+                                               th:field="*{providerName}" th:value="*{providerName}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label th:for="uniqueIdColumnName">Unique Id Column</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" id="uniqueIdColumnName"
+                                               th:field="*{uniqueIdColumnName}" th:value="*{uniqueIdColumnName}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="text-center">
+                                        <label for="uniqueOutputColumnName">Output Column Name</label>
+                                    </td>
+                                    <td class="text-center">
+                                        <input type="text" class="form-control" id="uniqueOutputColumnName"
+                                               th:field="*{uniqueOutputColumnName}" th:value="*{uniqueOutputColumnName}"/>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div align="right">
+                                <input type="submit" class="btn btn-success" value="Create Rule System">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:insert="~{includes/footer :: footer}"/>
+    </body>
+
+</html>

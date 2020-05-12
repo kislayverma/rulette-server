@@ -18,7 +18,9 @@
             <div th:switch="${ruleSystemPage.data}">
                 <div th:case="null">
                     <div class="float-left">
-                        <h4>List of Rule Systems</h4>
+                        <b>List of Rule Systems</b>
+                        |
+                        <a href="/ui/rulesystem/show-add">Create new rule system</a>
                     </div>
                     <div class="float-right">
                         No records found!
@@ -26,7 +28,9 @@
                 </div>
                 <div th:case="*">
                     <div class="float-left">
-                        <h4>List of Rule Systems</h4>
+                        <b>List of Rule Systems</b>
+                        |
+                        <a href="/ui/rulesystem/show-add">Create new rule system</a>
                     </div>
                     <div class="float-right">
                         <span>
@@ -71,7 +75,7 @@
                         <td class="text-center" th:text="${ruleSystem.uniqueIdColumnName}"></td>
                         <td class="text-center">
                             <span th:each="column : ${ruleSystem.inputColumnList}">
-                                <a href="#" th:onclick="$('#ruleInputModal-' + [[${column.name}]]).modal('toggle');">
+                                <a href="#" th:onclick="$('#ruleInputModal-' + [[${ruleSystem.ruleSystemName}]]  + [[${column.name}]]).modal('toggle');">
                                     <span th:text="${column.name}"></span>
                                 </a>
                                 <!-- Modal for showing rule input column details -->
