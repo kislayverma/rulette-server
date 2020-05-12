@@ -18,7 +18,3 @@ rulesystems:
         minPoolSize: 10
         maxStatements: 20
         connectionTimeout: 5000
-
-  systems:
-    -   name: tax_rule_system
-        provider: taxDataProvider
