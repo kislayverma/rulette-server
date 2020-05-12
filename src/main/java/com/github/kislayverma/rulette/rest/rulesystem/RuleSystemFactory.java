@@ -36,22 +36,23 @@ public class RuleSystemFactory {
     }
 
     public List<RuleSystem> getAllRuleSystems() {
+        LOGGER.info("Returning {} rule systems", RULE_SYSTEM_MAP.size());
         return new ArrayList<>(RULE_SYSTEM_MAP.values());
     }
 
     public RuleSystem getRuleSystem(String ruleSystemName) {
         return getRuleSystemInternal(ruleSystemName)
-            .orElseThrow(() -> {
-                return new RuleSystemNotFoundException("Rule system with name " + ruleSystemName + " not found");
-            });
+            .orElseThrow(() -> new RuleSystemNotFoundException("Rule system with name " + ruleSystemName + " not found"));
     }
 
     public synchronized void reloadRuleSystem(String ruleSystemName) {
+        LOGGER.info("Reloading rule system {}", ruleSystemName);
         loadRuleSystem(ruleSystemName);
     }
 
     private synchronized void loadRuleSystem(String ruleSystemName) {
         try {
+            LOGGER.info("Loading rule system {}", ruleSystemName);
             RULE_SYSTEM_MAP.put(ruleSystemName, buildRuleSystem(ruleSystemName));
         } catch (Exception e) {
             throw new BadServerException("Rule System with name " + ruleSystemName + " could not be loaded", e);
@@ -64,6 +65,7 @@ public class RuleSystemFactory {
 
     private RuleSystem buildRuleSystem(String ruleSystemName) {
         try {
+            LOGGER.info("Constructing rule system {}", ruleSystemName);
             return new RuleSystem(ruleSystemName, providerService.getProviderForRuleSystem(ruleSystemName));
         } catch (Exception e) {
             throw new BadServerException("Rule System with name " + ruleSystemName + " could not be loaded", e);
