@@ -18,7 +18,8 @@
                 <div class="card-body">
                     <div class="col">
                         <form action="#" th:object="${ruleDto}"
-                              th:action="@{/ui/evaluate/{ruleSystemName}(ruleSystemName = ${ruleSystem.ruleSystemName})}"
+                              th:action="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule/evaluate
+                                  (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName})}"
                               method="post">
                             <div class="row">
                                 <th:block th:each="colName : ${ruleSystem.inputColumnList}">
@@ -78,15 +79,15 @@
                                 </td:block>
                                 <td class="text-center" th:text="${applicableRule.getColumnData(ruleSystem.uniqueOutputColumnName).rawValue}"></td>
                                 <td align="center">
-                                    <a th:href="@{/ui/edit/{ruleSystemName}/{ruleId}
-                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${applicableRule.id})}"
+                                    <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule/{ruleId}/show-edit
+                                        (providerName = ${ruleSystem.providerName}, ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${applicableRule.id})}"
                                        class="btn btn-primary btn-sm">
                                         <i class="fas fa-user-edit ml-2"></i>
                                     </a>
                                 </td>
                                 <td align="center">
-                                    <a th:href="@{/ui/delete/{ruleSystemName}/{ruleId}
-                                    (ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${applicableRule.id})}"
+                                    <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule/{ruleId}/delete
+                                       (providerName = ${ruleSystem.providerName}, ruleSystemName=${ruleSystem.ruleSystemName}, ruleId=${applicableRule.id})}"
                                        class="btn btn-danger btn-sm">
                                         <i class="fas fa-user-times ml-2"></i>
                                     </a>

@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.metadata.RuleInputMetaData;
+import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.core.ruleinput.type.RuleInputType;
 import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
 import com.github.kislayverma.rulette.rest.exception.RuleSystemNotFoundException;
+import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemMetadataDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,5 +74,17 @@ public class TransformerUtil {
             });
 
         return map;
+    }
+
+    public static RuleSystemMetadataDto transformToDto(RuleSystemMetaData rsmd, String providerName) {
+        RuleSystemMetadataDto dto = new RuleSystemMetadataDto();
+        dto.setRuleSystemName(rsmd.getRuleSystemName());
+        dto.setProviderName(providerName);
+        dto.setInputColumnList(rsmd.getInputColumnList());
+        dto.setTableName(rsmd.getTableName());
+        dto.setUniqueIdColumnName(rsmd.getUniqueIdColumnName());
+        dto.setUniqueOutputColumnName(rsmd.getUniqueOutputColumnName());
+
+        return dto;
     }
 }

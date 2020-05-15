@@ -26,9 +26,4 @@ public class DataProviderController {
     public DataProviderConfig getProviderByName(@PathVariable String providerName) {
         return dataProviderService.getProviderConfig(providerName);
     }
-
-    @GetMapping("/rulesystem/{ruleSystemName}")
-    public DataProviderConfig getProviderForRuleSystem(@PathVariable String ruleSystemName) {
-        return dataProviderService.getProviderConfigForRuleSystem(ruleSystemName);
-    }
 }
