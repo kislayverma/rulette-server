@@ -55,7 +55,7 @@
                     </div>
                     <div class="float-right">
                         <span>
-                            <a th:href="@{/ui/provider/{providername}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
+                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
                                 (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum - 1})}">
                                 &lt;&lt; Prev
                             </a>
@@ -64,7 +64,7 @@
                         <span th:text="'Showing page ' + ${rulePage.pageNum} + ' of ' +  ${1 + (rulePage.totalRecordCount / rulePage.pageSize)}"/>
                         |
                         <span>
-                            <a th:href="@{/ui/provider/{providername}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
+                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
                                 (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum + 1})}">
                                 Next &gt;&gt;
                             </a>
@@ -115,7 +115,7 @@
                 </table>
                 <div class="float-right">
                         <span>
-                            <a th:href="@{/ui/provider/{providername}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
+                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
                                 (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum - 1})}">
                                 &lt;&lt; Prev
                             </a>
@@ -124,7 +124,7 @@
                     <span th:text="'Showing page ' + ${rulePage.pageNum} + ' of ' +  ${1 + (rulePage.totalRecordCount / rulePage.pageSize)}"/>
                     |
                     <span>
-                        <a th:href="@{/ui/provider/{providername}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
+                        <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule?pageNum={pageNum}&pageSize=50
                             (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName}, pageNum=${rulePage.pageNum + 1})}">
                             Next &gt;&gt;
                         </a>
