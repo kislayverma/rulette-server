@@ -21,7 +21,8 @@
                 <div class="card-body">
                     <div class="col">
                         <form action="#" th:object="${ruleInputToAdd}"
-                              th:action="@{/ui/{ruleSystemName}/ruleinput/save(ruleSystemName = ${ruleSystem.ruleSystemName})}"
+                              th:action="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/ruleinput/add
+                                  (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName})}"
                               method="post">
                             <table class="table table-striped table-responsive-md table-bordered table-hover table-sm">
                                 <thead class="thead-dark">

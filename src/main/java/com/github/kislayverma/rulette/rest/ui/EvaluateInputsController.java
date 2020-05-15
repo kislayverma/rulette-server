@@ -2,7 +2,6 @@ package com.github.kislayverma.rulette.rest.ui;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.rule.Rule;
-import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.rule.RuleDto;
 import com.github.kislayverma.rulette.rest.rule.RuleService;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
@@ -15,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
@@ -31,20 +29,19 @@ public class EvaluateInputsController {
     @Autowired
     private RuleService ruleService;
 
-    @RequestMapping("/evaluate/{ruleSystemName}")
-    public String showEditRule(
+    @RequestMapping("/provider/{providerName}/rulesystem/{ruleSystemName}/rule/evaluate")
+    public String evaluate(
         Model model,
         @ModelAttribute("ruleDto") RuleDto ruleDto,
-        @PathVariable String ruleSystemName,
-        RedirectAttributes redirectAttributes) {
+        @PathVariable String providerName,
+        @PathVariable String ruleSystemName) {
         try {
-            final RuleSystem rs = ruleSystemService.getRuleSystem(ruleSystemName);
-            model.addAttribute("ruleSystem", rs.getMetaData());
+            final RuleSystem rs = ruleSystemService.getRuleSystem(providerName, ruleSystemName);
+            model.addAttribute("ruleSystem", TransformerUtil.transformToDto(rs.getMetaData(), providerName));
             model.addAttribute("ruleDto", ruleDto);
 
             LOGGER.info("Evaluating inputs to show applicable rule. Input {}", ruleDto.getRuleInputs());
-            final Rule rule =
-                ruleService.getApplicableRule(ruleSystemName, ruleDto.getRuleInputs());
+            final Rule rule = ruleService.getApplicableRule(providerName, ruleSystemName, ruleDto.getRuleInputs());
 
             RuleDto dto = null;
 
@@ -62,10 +59,11 @@ public class EvaluateInputsController {
             }
 
             model.addAttribute("applicableRule", rule);
-
-            return "evaluate-input";
         } catch (Exception e) {
-            throw new BadServerException("Error getting rules", e);
+            model.addAttribute("message", "Error getting rules. " + e.getMessage());
+            model.addAttribute("alertClass", "alert-danger");
         }
+
+        return "evaluate-input";
     }
 }

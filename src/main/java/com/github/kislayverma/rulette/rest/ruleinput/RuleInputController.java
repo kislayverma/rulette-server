@@ -9,29 +9,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/{ruleSystemName}/ruleinput")
+@RequestMapping("/api/provider/{providerName}/rulesystem/{ruleSystemName}/ruleinput")
 public class RuleInputController {
     @Autowired
     private RuleInputService ruleInputService;
 
     @GetMapping("/")
-    public List<RuleInputMetaData> geAlltRuleInput(@PathVariable String ruleSystemName) {
-        return ruleInputService.getAllRuleInputs(ruleSystemName);
+    public List<RuleInputMetaData> geAllRuleInputs(@PathVariable String providerName, @PathVariable String ruleSystemName) {
+        return ruleInputService.getAllRuleInputs(providerName, ruleSystemName);
     }
 
     @GetMapping("/{ruleInputName}")
-    public RuleInputMetaData getRuleInputByName(@PathVariable String ruleSystemName, @PathVariable String ruleInputName) {
-        return ruleInputService.getRuleInput(ruleSystemName, ruleInputName);
+    public RuleInputMetaData getRuleInputByName(
+        @PathVariable String providerName, @PathVariable String ruleSystemName, @PathVariable String ruleInputName) {
+        return ruleInputService.getRuleInput(providerName, ruleSystemName, ruleInputName);
     }
 
     @PostMapping("/")
-    public void addRule(@PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
+    public void addRuleInput(@PathVariable String providerName, @PathVariable String ruleSystemName, @RequestBody JsonNode payload) {
         RuleInputMetaData ruleInput = TransformerUtil.convertJsonToRuleInputMetadata(payload);
-        ruleInputService.addRuleInput(ruleSystemName, ruleInput);
+        ruleInputService.addRuleInput(providerName, ruleSystemName, ruleInput);
     }
 
     @DeleteMapping("/{ruleInputName}")
-    public void deleteRule(@PathVariable String ruleSystemName, @PathVariable String ruleInputName) {
-        ruleInputService.deleteRuleInput(ruleSystemName, ruleInputName);
+    public void deleteRuleInput(@PathVariable String providerName, @PathVariable String ruleSystemName, @PathVariable String ruleInputName) {
+        ruleInputService.deleteRuleInput(providerName, ruleSystemName, ruleInputName);
     }
 }

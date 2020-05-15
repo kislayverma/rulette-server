@@ -77,32 +77,36 @@
                         <td class="text-center" th:text="${ruleSystem.uniqueIdColumnName}"></td>
                         <td class="text-center">
                             <span th:each="column : ${ruleSystem.inputColumnList}">
-                                <a href="#" th:onclick="$('#ruleInputModal-' + [[${ruleSystem.ruleSystemName}]]  + [[${column.name}]]).modal('toggle');">
+                                <a href="#"
+                                   th:onclick="$('#ruleInputModal-' + [[${ruleSystem.providerName}]] + [[${ruleSystem.ruleSystemName}]]  + [[${column.name}]]).modal('toggle');">
                                     <span th:text="${column.name}"></span>
                                 </a>
                                 <!-- Modal for showing rule input column details -->
                                 <div th:replace="modal/rule-input-modal :: rule-input-modal"></div>
                             </span>
-                            <a th:href="@{/ui/{ruleSystemName}/ruleinput/add
-                                    (ruleSystemName=${ruleSystem.ruleSystemName})}"
+                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/ruleinput/show-add
+                                    (providerName = ${ruleSystem.providerName}, ruleSystemName=${ruleSystem.ruleSystemName})}"
                                class="btn btn-primary btn-sm">
                                 <i class="fas fa-plus">Add new</i>
                             </a>
                         </td>
                         <td class="text-center" th:text="${ruleSystem.uniqueOutputColumnName}"></td>
                         <td class="text-center">
-                            <a th:href="@{/ui/{ruleSystemName}/rules(ruleSystemName = ${ruleSystem.ruleSystemName})}">
+                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule
+                                (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName})}">
                                 View Rules
                             </a>
                         </td>
                         <td align="center">
-                            <a th:href="@{/ui/{ruleSystemName}/reload(ruleSystemName=${ruleSystem.ruleSystemName})}"
+                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/reload
+                                (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName})}"
                                class="btn btn-primary btn-sm">
                                 <i class="fas fa-redo ml-2"></i>
                             </a>
                         </td>
                         <td align="center">
-                            <a th:href="@{/ui/{ruleSystemName}/delete(ruleSystemName=${ruleSystem.ruleSystemName})}"
+                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/delete
+                                (providerName = ${ruleSystem.providerName}, ruleSystemName=${ruleSystem.ruleSystemName})}"
                                class="btn btn-danger btn-sm">
                                 <i class="fas fa-user-times ml-2"></i>
                             </a>

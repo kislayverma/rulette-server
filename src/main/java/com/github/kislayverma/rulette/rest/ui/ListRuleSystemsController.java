@@ -5,6 +5,7 @@ import com.github.kislayverma.rulette.rest.model.PaginatedResult;
 import com.github.kislayverma.rulette.rest.provider.DataProviderService;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemMetadataDto;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
+import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,23 +33,15 @@ public class ListRuleSystemsController {
                                     @RequestParam(defaultValue = "1") Integer pageNum,
                                     @RequestParam(defaultValue = "50") Integer pageSize) {
         PaginatedResult<RuleSystemMetaData> metadata = ruleSystemService.getAllRuleSystemMetaData(pageNum, pageSize);
+        List<RuleSystemMetadataDto> dtoList = dataProviderService.getAllProviderConfigs()
+            .stream()
+            .flatMap(providerConfig ->
+                dataProviderService.getProvider(providerConfig.getName()).getAllRuleSystemMetaData()
+                    .stream()
+                    .map(rsmd -> TransformerUtil.transformToDto(rsmd, providerConfig.getName()))
+            )
+            .collect(Collectors.toList());
 
-        List<RuleSystemMetadataDto> dtoList =
-            metadata
-                .getData()
-                .stream()
-                .map(rsmd ->{
-                    RuleSystemMetadataDto dto = new RuleSystemMetadataDto();
-                    dto.setRuleSystemName(rsmd.getRuleSystemName());
-                    dto.setProviderName(dataProviderService.getProviderConfigForRuleSystem(rsmd.getRuleSystemName()).getName());
-                    dto.setInputColumnList(rsmd.getInputColumnList());
-                    dto.setTableName(rsmd.getTableName());
-                    dto.setUniqueIdColumnName(rsmd.getUniqueIdColumnName());
-                    dto.setUniqueOutputColumnName(rsmd.getUniqueOutputColumnName());
-
-                    return dto;
-                })
-                .collect(Collectors.toList());
         PaginatedResult<RuleSystemMetadataDto> dtoPage = new PaginatedResult<>(
             dtoList, pageNum, pageSize, metadata.getTotalRecordCount(), metadata.isHasNext(), metadata.isHasPrev());
 
@@ -57,11 +50,11 @@ public class ListRuleSystemsController {
         return "rule-systems";
     }
 
-    @RequestMapping("/{ruleSystemName}/reload")
-    public String reloadRuleSystem(Model model, @PathVariable String ruleSystemName, RedirectAttributes redirectAttributes) {
+    @RequestMapping("/provider/{providerName}/rulesystem/{ruleSystemName}/reload")
+    public String reloadRuleSystem(@PathVariable String providerName, @PathVariable String ruleSystemName, RedirectAttributes redirectAttributes) {
         try {
             LOGGER.info("Reloading rule system {}", ruleSystemName);
-            ruleSystemService.reload(ruleSystemName);
+            ruleSystemService.reload(providerName, ruleSystemName);
             redirectAttributes.addFlashAttribute("message", "Successfully reloaded " + ruleSystemName);
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         } catch (Exception e) {
@@ -73,13 +66,14 @@ public class ListRuleSystemsController {
         return "redirect:/ui";
     }
 
-    @RequestMapping("/{ruleSystemName}/delete")
+    @RequestMapping("/provider/{providerName}/rulesystem/{ruleSystemName}/delete")
     public String deleteRuleSystem(
+        @PathVariable String providerName,
         @PathVariable String ruleSystemName,
         RedirectAttributes redirectAttributes) {
         try {
             LOGGER.info("Deleting rule system {}", ruleSystemName);
-            ruleSystemService.deleteRuleSystem(ruleSystemName);
+            ruleSystemService.deleteRuleSystem(providerName, ruleSystemName);
             redirectAttributes.addFlashAttribute("message", "Successfully deleted rule system!");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         } catch (Exception e) {
@@ -100,11 +94,10 @@ public class ListRuleSystemsController {
         return "add-rule-system";
     }
 
-    @RequestMapping(value="/rulesystem/save", method= RequestMethod.POST)
-    public String addRuleSystem(
-        Model model,
-        @ModelAttribute("ruleSystemToAdd") RuleSystemMetadataDto ruleSystemMetadataDto,
-        RedirectAttributes redirectAttributes) {
+    @RequestMapping(value="/rulesystem/add", method= RequestMethod.POST)
+    public String addRuleSystem(Model model,
+                                @ModelAttribute("ruleSystemToAdd") RuleSystemMetadataDto ruleSystemMetadataDto,
+                                RedirectAttributes redirectAttributes) {
         try {
             LOGGER.info(ruleSystemMetadataDto.toString());
             RuleSystemMetaData ruleSystemMetaData = new RuleSystemMetaData(
@@ -113,7 +106,7 @@ public class ListRuleSystemsController {
                 ruleSystemMetadataDto.getUniqueIdColumnName(),
                 ruleSystemMetadataDto.getUniqueOutputColumnName(),
                 new ArrayList<>());
-            ruleSystemService.createRuleSystem(ruleSystemMetaData, ruleSystemMetadataDto.getProviderName());
+            ruleSystemService.createRuleSystem(ruleSystemMetadataDto.getProviderName(), ruleSystemMetaData);
 
             redirectAttributes.addFlashAttribute("message", "Successfully added rule system! Now add rule inputs and reload");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
