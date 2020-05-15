@@ -2,7 +2,7 @@ package com.github.kislayverma.rulette.rest.ruleinput;
 
 import com.github.kislayverma.rulette.core.metadata.RuleInputMetaData;
 import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemFactory;
+import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,26 +15,26 @@ public class RuleInputService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleInputService.class);
 
     @Autowired
-    private RuleSystemFactory ruleSystemFactory;
+    private RuleSystemService ruleSystemService;
 
-    public List<RuleInputMetaData> getAllRuleInputs(final String ruleSystemName) {
-        return ruleSystemFactory.getRuleSystem(ruleSystemName).getMetaData().getInputColumnList();
+    public List<RuleInputMetaData> getAllRuleInputs(final String providerName, final String ruleSystemName) {
+        return ruleSystemService.getRuleSystem(providerName, ruleSystemName).getMetaData().getInputColumnList();
     }
 
-    public RuleInputMetaData getRuleInput(final String ruleSystemName, final String ruleInputName) {
+    public RuleInputMetaData getRuleInput(final String providerName, final String ruleSystemName, final String ruleInputName) {
         List<RuleInputMetaData> ruleInputs =
-            ruleSystemFactory.getRuleSystem(ruleSystemName).getMetaData().getInputColumnList();
+            ruleSystemService.getRuleSystem(providerName, ruleSystemName).getMetaData().getInputColumnList();
         return ruleInputs.stream().filter(ruleInput -> ruleInput.getName().equals(ruleInputName)).findFirst()
             .orElseThrow(() -> new RuleNotFoundException("No rule input with name " + ruleSystemName));
     }
 
-    public void addRuleInput(final String ruleSystemName, final RuleInputMetaData ruleInput) {
+    public void addRuleInput(final String providerName, final String ruleSystemName, final RuleInputMetaData ruleInput) {
         LOGGER.info("Adding new rule input to rule system {} : {}", ruleSystemName, ruleInput);
-        ruleSystemFactory.getRuleSystem(ruleSystemName).addRuleInput(ruleInput);
+        ruleSystemService.getRuleSystem(providerName, ruleSystemName).addRuleInput(ruleInput);
     }
 
-    public void deleteRuleInput(final String ruleSystemName, final String ruleInputName) {
+    public void deleteRuleInput(final String providerName, final String ruleSystemName, final String ruleInputName) {
         LOGGER.info("Deleting rule input {} from rule system {}", ruleInputName, ruleSystemName);
-        ruleSystemFactory.getRuleSystem(ruleSystemName).deleteRuleInput(ruleInputName);
+        ruleSystemService.getRuleSystem(providerName, ruleSystemName).deleteRuleInput(ruleInputName);
     }
 }

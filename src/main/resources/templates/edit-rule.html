@@ -17,8 +17,8 @@
                 <div class="card-body">
                     <div class="col">
                         <form action="#" th:object="${ruleDto}"
-                              th:action="@{/ui/save/{ruleSystemName}/{ruleId}
-                                (ruleSystemName = ${ruleSystem.ruleSystemName}, ruleId=${ruleToEdit.get(ruleSystem.uniqueIdColumnName)})}"
+                              th:action="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/rule/{ruleId}/edit
+                                (providerName = ${ruleSystem.providerName}, ruleSystemName = ${ruleSystem.ruleSystemName}, ruleId=${ruleToEdit.get(ruleSystem.uniqueIdColumnName)})}"
                               method="post">
                             <div class="row">
                                 <th:block th:each="colName : ${ruleSystem.inputColumnList}">

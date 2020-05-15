@@ -1,17 +1,14 @@
 package com.github.kislayverma.rulette.rest.rulesystem;
 
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
-import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/rulesystem")
+@RequestMapping("/api/provider/{providerName}/rulesystem")
 public class RuleSystemController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RuleSystemController.class);
 
@@ -25,17 +22,17 @@ public class RuleSystemController {
     }
 
     @GetMapping("/{ruleSystemName}")
-    public RuleSystemMetaData getRuleSystemMetadata(@PathVariable String ruleSystemName) {
-        return ruleSystemService.getRuleSystemMetadata(ruleSystemName);
+    public RuleSystemMetaData getRuleSystemMetadata(@PathVariable String providerName, @PathVariable String ruleSystemName) {
+        return ruleSystemService.getRuleSystemMetadata(providerName, ruleSystemName);
     }
 
     @PutMapping("/{ruleSystemName}/reload")
-    public void reload(@PathVariable String ruleSystemName) {
-        ruleSystemService.reload(ruleSystemName);
+    public void reload(@PathVariable String providerName, @PathVariable String ruleSystemName) {
+        ruleSystemService.reload(providerName, ruleSystemName);
     }
 
     @DeleteMapping("/{ruleSystemName}")
-    public void deleteRule(@PathVariable String ruleSystemName, @PathVariable String ruleId) {
-        ruleSystemService.deleteRuleSystem(ruleSystemName);
+    public void deleteRuleSystem(@PathVariable String providerName, @PathVariable String ruleSystemName) {
+        ruleSystemService.deleteRuleSystem(providerName, ruleSystemName);
     }
 }

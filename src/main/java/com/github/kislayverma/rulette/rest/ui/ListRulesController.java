@@ -3,12 +3,12 @@ package com.github.kislayverma.rulette.rest.ui;
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.core.rule.Rule;
-import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
-import com.github.kislayverma.rulette.rest.rule.RuleDto;
 import com.github.kislayverma.rulette.rest.rule.RuleService;
+import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemMetadataDto;
 import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
 import com.github.kislayverma.rulette.rest.utils.PaginationUtil;
+import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,16 +33,28 @@ public class ListRulesController {
     @Autowired
     private RuleService ruleService;
 
-    @RequestMapping("/{ruleSystemName}/rules")
+    @RequestMapping("/provider/{providerName}/rulesystem/{ruleSystemName}/rule")
     public String showRulesForRuleSystem(Model model,
-                                            @PathVariable String ruleSystemName,
-                                            @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNum,
-                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize,
-                                            RedirectAttributes redirectAttributes) {
+                                         @PathVariable String providerName,
+                                         @PathVariable String ruleSystemName,
+                                         @RequestParam(required = false) String ruleId,
+                                         @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNum,
+                                         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize,
+                                         RedirectAttributes redirectAttributes) {
+        return (ruleId == null || ruleId.trim().isEmpty()) ?
+            showAllRules(model, providerName, ruleSystemName, pageNum, pageSize, redirectAttributes) :
+            searchRuleById(model, providerName, ruleSystemName, ruleId);
+    }
+
+    private String showAllRules(
+        Model model, String providerName, String ruleSystemName, Integer pageNum, Integer pageSize, RedirectAttributes redirectAttributes) {
+        LOGGER.info("Showing all rules...");
+
         try {
-            final RuleSystemMetaData rs = ruleSystemService.getRuleSystemMetadata(ruleSystemName);
-            PaginatedResult<Rule> rulePage = ruleService.getRules(ruleSystemName, pageNum, pageSize);
-            populateListRulePageModel(model, rs, rulePage, "");
+            final RuleSystemMetaData rsmd = ruleSystemService.getRuleSystemMetadata(providerName, ruleSystemName);
+            RuleSystemMetadataDto dto = TransformerUtil.transformToDto(rsmd, providerName);
+            PaginatedResult<Rule> rulePage = ruleService.getRules(providerName, ruleSystemName, pageNum, pageSize);
+            populateListRulePageModel(model, dto, rulePage, "");
 
             return "rules";
         } catch (Exception e) {
@@ -54,27 +66,18 @@ public class ListRulesController {
         }
     }
 
-    @RequestMapping("/{ruleSystemName}")
-    public String searchRuleById(
-        Model model,
-        @PathVariable String ruleSystemName,
-        @RequestParam(required = false) String ruleId) {
-        if (ruleId == null || ruleId.trim().isEmpty()) {
-            LOGGER.info("Empty ruleId, so showing all rules...");
-            return "redirect:/ui/" + ruleSystemName + "/rules";
-        }
-
-        final RuleSystemMetaData rs = ruleSystemService.getRuleSystemMetadata(ruleSystemName);
+    private String searchRuleById(Model model, String providerName, String ruleSystemName, String ruleId) {
+        LOGGER.info("Searching rule id {} of rule system {}", ruleId, ruleSystemName);
+        final RuleSystemMetaData rsmd = ruleSystemService.getRuleSystemMetadata(providerName, ruleSystemName);
+        RuleSystemMetadataDto dto = TransformerUtil.transformToDto(rsmd, providerName);
 
         try {
-
-            LOGGER.info("Searching rule id {} of rule system {}", ruleId, ruleSystemName);
-            final Rule rule = ruleService.getRuleById(ruleSystemName, ruleId);
+            final Rule rule = ruleService.getRuleById(providerName, ruleSystemName, ruleId);
 
             PaginatedResult<Rule> rulePage = PaginationUtil.getPaginatedData(
                 Collections.singletonList(rule), Integer.parseInt(DEFAULT_PAGE_NUMBER), Integer.parseInt(DEFAULT_PAGE_NUMBER));
 
-            populateListRulePageModel(model, rs, rulePage, ruleId);
+            populateListRulePageModel(model, dto, rulePage, ruleId);
 
         } catch (Exception e) {
             LOGGER.error("Failed to get rule by id", e);
@@ -82,29 +85,29 @@ public class ListRulesController {
             model.addAttribute("alertClass", "alert-danger");
             PaginatedResult<Rule> rulePage = PaginationUtil.getPaginatedData(
                 new ArrayList<>(), Integer.parseInt(DEFAULT_PAGE_NUMBER), Integer.parseInt(DEFAULT_PAGE_NUMBER));
-            populateListRulePageModel(model, rs, rulePage, ruleId);
+            populateListRulePageModel(model, dto, rulePage, ruleId);
         }
 
         return "rules";
     }
 
-    private void populateListRulePageModel(Model model, RuleSystemMetaData rs, PaginatedResult<Rule> rulePage, String ruleId) {
+    private void populateListRulePageModel(Model model, RuleSystemMetadataDto rs, PaginatedResult<Rule> rulePage, String ruleId) {
         model.addAttribute("ruleSystem", rs);
         model.addAttribute("rulePage", rulePage);
         model.addAttribute("rulePage", rulePage);
         model.addAttribute("ruleId", ruleId);
     }
 
-    @RequestMapping("/delete/{ruleSystemName}/{ruleId}")
-    public String deleteRule(
-        @PathVariable String ruleSystemName,
-        @PathVariable String ruleId,
-        RedirectAttributes redirectAttributes) {
+    @RequestMapping("/provider/{providerName}/rulesystem/{ruleSystemName}/rule/{ruleId}/delete")
+    public String deleteRule(@PathVariable String providerName,
+                             @PathVariable String ruleSystemName,
+                             @PathVariable String ruleId,
+                             RedirectAttributes redirectAttributes) {
         try {
-            final RuleSystem rs = ruleSystemService.getRuleSystem(ruleSystemName);
+            final RuleSystem rs = ruleSystemService.getRuleSystem(providerName, ruleSystemName);
 
             LOGGER.info("Deleting rule id {} of rule system {}", ruleId, ruleSystemName);
-            ruleService.deleteRule(ruleSystemName, ruleId);
+            ruleService.deleteRule(providerName, ruleSystemName, ruleId);
             redirectAttributes.addFlashAttribute("message", "Successfully deleted rule!");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         } catch (Exception e) {
@@ -113,6 +116,7 @@ public class ListRulesController {
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
         }
 
-        return "redirect:/ui/" + ruleSystemName + "/rules";
+        return "redirect:/ui/provider/" + providerName + "/rulesystem/" + ruleSystemName + "/rule";
     }
+
 }

@@ -1,7 +1,6 @@
 package com.github.kislayverma.rulette.rest.rulesystem;
 
 import com.github.kislayverma.rulette.RuleSystem;
-import com.github.kislayverma.rulette.core.data.IDataProvider;
 import com.github.kislayverma.rulette.core.exception.RuleConflictException;
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.rest.exception.BadClientException;
@@ -26,8 +25,8 @@ public class RuleSystemService {
     @Autowired
     private DataProviderService providerService;
 
-    public RuleSystem getRuleSystem(final String ruleSystemName) {
-        return ruleSystemFactory.getRuleSystem(ruleSystemName);
+    public RuleSystem getRuleSystem(final String providerName, final String ruleSystemName) {
+        return ruleSystemFactory.getRuleSystem(providerName, ruleSystemName);
     }
 
     public PaginatedResult<RuleSystemMetaData> getAllRuleSystemMetaData(int pageNum, int pageSize) {
@@ -43,19 +42,19 @@ public class RuleSystemService {
         return result;
     }
 
-    public RuleSystemMetaData getRuleSystemMetadata(String ruleSystemName) {
-        return getRuleSystem(ruleSystemName).getMetaData();
+    public RuleSystemMetaData getRuleSystemMetadata(String providerName, String ruleSystemName) {
+        return getRuleSystem(providerName, ruleSystemName).getMetaData();
     }
 
-    public void reload(String ruleSystemName) {
+    public void reload(String providerName, String ruleSystemName) {
         try {
-            getRuleSystem(ruleSystemName).reload();
+            getRuleSystem(providerName, ruleSystemName).reload();
         } catch (RuleConflictException ex) {
             throw new BadServerException("Error reloading rule system", ex);
         }
     }
 
-    public void createRuleSystem(RuleSystemMetaData ruleSystemMetaData, String providerName) {
+    public void createRuleSystem(String providerName, RuleSystemMetaData ruleSystemMetaData) {
         if (ruleSystemMetaData == null ||
             ruleSystemMetaData.getRuleSystemName() == null ||
             ruleSystemMetaData.getRuleSystemName().trim().isEmpty() ||
@@ -68,22 +67,22 @@ public class RuleSystemService {
 
         String ruleSystemName = ruleSystemMetaData.getRuleSystemName();
         try {
-            if (getRuleSystemMetadata(ruleSystemName) != null) {
+            if (getRuleSystemMetadata(providerName, ruleSystemName) != null) {
                 throw new BadClientException("Rule system with given name already exists");
             }
         } catch (RuleSystemNotFoundException ex) {
             // Rule system does not exist - so all is well in this use case
         }
 
-        providerService.insertRuleSystemMetadata(ruleSystemMetaData, providerName);
-        ruleSystemFactory.reloadRuleSystem(ruleSystemName);
+        providerService.insertRuleSystemMetadata(providerName, ruleSystemMetaData);
+        ruleSystemFactory.reloadRuleSystem(providerName, ruleSystemName);
     }
 
-    public void deleteRuleSystem(String ruleSystemName) {
+    public void deleteRuleSystem(String providerName, String ruleSystemName) {
         if (ruleSystemName == null || ruleSystemName.trim().isEmpty()) {
             throw new BadClientException("No rule system name give to delete");
         }
-        providerService.deleteRuleSystemMetadata(ruleSystemName);
-        ruleSystemFactory.deleteRuleSystem(ruleSystemName);
+        providerService.deleteRuleSystemMetadata(providerName, ruleSystemName);
+        ruleSystemFactory.deleteRuleSystem(providerName, ruleSystemName);
     }
 }
