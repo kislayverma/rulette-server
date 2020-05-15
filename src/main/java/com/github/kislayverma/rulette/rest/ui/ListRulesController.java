@@ -37,16 +37,20 @@ public class ListRulesController {
     public String showRulesForRuleSystem(Model model,
                                             @PathVariable String ruleSystemName,
                                             @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) Integer pageNum,
-                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize) {
+                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) Integer pageSize,
+                                            RedirectAttributes redirectAttributes) {
         try {
             final RuleSystemMetaData rs = ruleSystemService.getRuleSystemMetadata(ruleSystemName);
             PaginatedResult<Rule> rulePage = ruleService.getRules(ruleSystemName, pageNum, pageSize);
-
             populateListRulePageModel(model, rs, rulePage, "");
 
             return "rules";
         } catch (Exception e) {
-            throw new BadServerException("Error getting rules", e);
+            LOGGER.error("Error loading rules", e);
+            redirectAttributes.addFlashAttribute("message", "Failed to load rules. " + e.getMessage());
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+
+            return "redirect:/ui/";
         }
     }
 
