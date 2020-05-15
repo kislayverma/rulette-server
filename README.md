@@ -29,3 +29,15 @@ The external configuration file is used for some configuring Spring Boot itself 
 
 A sample file (sample-application.yml) is included in the repository to show how Rulette configuration should be done.
 
+# Docker
+You can build the docker image by first building the project as described above and then running the follwing command:
+
+    docker build --build-arg JAR_FILE=target/rulette-server-0.0.1-SNAPSHOT.jar -t rulette-server .
+
+You should the correct jarname generated from the maven build process as the JAR_FILE argument.
+
+The generated docker image can now be be run as follows:
+
+    docker run -v /absolute-path-to-local/application.yml:/application.yml  -p 8081:8081  rulette-server
+
+We are passing in a application.yml file located at the given path to the docker image. If you are trying to connect to a local MySQL server, you should use "host.docker.internal" as the MySQL IP address in the application.yml file.
