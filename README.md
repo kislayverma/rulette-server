@@ -10,7 +10,7 @@ Rulette server provides a REST API and a UI to interface with any MySQL backed r
 Rulette Server is built using Spring Boot and Thymeleaf.
 
 # Build
-To run the project via Maven:
+To run the project via Maven, run the following command on the build directory:
 
 	mvn clean package
 
@@ -30,6 +30,14 @@ The external configuration file is used for some configuring Spring Boot itself 
 A sample file (sample-application.yml) is included in the repository to show how Rulette configuration should be done.
 
 # Docker
+Docker image for rulette-server is published on Docker Hub and can be downloaded bu running
+
+    docker pull kislayverma/rulette-server:0.0.1-SNAPSHOT
+
+The tag should reflect the version you want to pull.
+
+#### Building the Docker image
+
 You can build the docker image by first building the project as described above and then running the follwing command:
 
     docker build --build-arg JAR_FILE=target/rulette-server-0.0.1-SNAPSHOT.jar -t rulette-server .
