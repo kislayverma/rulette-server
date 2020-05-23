@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.ruleinput;
+package com.github.kislayverma.rulette.rest.api.ruleinput;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.kislayverma.rulette.core.metadata.RuleInputMetaData;

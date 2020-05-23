@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.rulesystem;
+package com.github.kislayverma.rulette.rest.api.rulesystem;
 
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;

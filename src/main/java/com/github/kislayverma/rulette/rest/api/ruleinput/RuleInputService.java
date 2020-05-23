@@ -1,8 +1,8 @@
-package com.github.kislayverma.rulette.rest.ruleinput;
+package com.github.kislayverma.rulette.rest.api.ruleinput;
 
 import com.github.kislayverma.rulette.core.metadata.RuleInputMetaData;
 import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

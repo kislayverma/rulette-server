@@ -1,10 +1,10 @@
-package com.github.kislayverma.rulette.rest.rule;
+package com.github.kislayverma.rulette.rest.api.rule;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemService;
 import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

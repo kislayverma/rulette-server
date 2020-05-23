@@ -1,11 +1,11 @@
-package com.github.kislayverma.rulette.rest.rule;
+package com.github.kislayverma.rulette.rest.api.rule;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.exception.RuleConflictException;
 import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemFactory;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemFactory;
 import com.github.kislayverma.rulette.rest.utils.PaginationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

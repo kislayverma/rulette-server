@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.provider;
+package com.github.kislayverma.rulette.rest.api.provider;
 
 public class DataProviderConfig {
     private String name;

@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.provider;
+package com.github.kislayverma.rulette.rest.api.provider;
 
 import com.github.kislayverma.rulette.core.data.IDataProvider;
 import com.github.kislayverma.rulette.mysql.MysqlDataProvider;

@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.ruleinput;
+package com.github.kislayverma.rulette.rest.api.ruleinput;
 
 import com.github.kislayverma.rulette.core.ruleinput.type.RuleInputType;
 

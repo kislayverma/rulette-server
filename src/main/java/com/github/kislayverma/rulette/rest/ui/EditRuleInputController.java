@@ -1,9 +1,9 @@
 package com.github.kislayverma.rulette.rest.ui;
 
 import com.github.kislayverma.rulette.core.metadata.RuleInputMetaData;
-import com.github.kislayverma.rulette.rest.ruleinput.RuleInputDto;
-import com.github.kislayverma.rulette.rest.ruleinput.RuleInputService;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
+import com.github.kislayverma.rulette.rest.api.ruleinput.RuleInputDto;
+import com.github.kislayverma.rulette.rest.api.ruleinput.RuleInputService;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemService;
 import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

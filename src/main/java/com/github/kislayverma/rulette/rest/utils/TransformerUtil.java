@@ -10,7 +10,7 @@ import com.github.kislayverma.rulette.core.rule.Rule;
 import com.github.kislayverma.rulette.core.ruleinput.type.RuleInputType;
 import com.github.kislayverma.rulette.rest.exception.RuleNotFoundException;
 import com.github.kislayverma.rulette.rest.exception.RuleSystemNotFoundException;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemMetadataDto;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemMetadataDto;
 
 import java.util.ArrayList;
 import java.util.HashMap;

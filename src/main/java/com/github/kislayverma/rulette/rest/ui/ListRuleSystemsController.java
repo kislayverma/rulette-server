@@ -2,9 +2,9 @@ package com.github.kislayverma.rulette.rest.ui;
 
 import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
-import com.github.kislayverma.rulette.rest.provider.DataProviderService;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemMetadataDto;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
+import com.github.kislayverma.rulette.rest.api.provider.DataProviderService;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemMetadataDto;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemService;
 import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

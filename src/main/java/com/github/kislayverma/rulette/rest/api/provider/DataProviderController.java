@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.provider;
+package com.github.kislayverma.rulette.rest.api.provider;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

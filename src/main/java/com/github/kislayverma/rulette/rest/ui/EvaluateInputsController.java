@@ -2,9 +2,9 @@ package com.github.kislayverma.rulette.rest.ui;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.rule.Rule;
-import com.github.kislayverma.rulette.rest.rule.RuleDto;
-import com.github.kislayverma.rulette.rest.rule.RuleService;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
+import com.github.kislayverma.rulette.rest.api.rule.RuleDto;
+import com.github.kislayverma.rulette.rest.api.rule.RuleService;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemService;
 import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Map;
 
