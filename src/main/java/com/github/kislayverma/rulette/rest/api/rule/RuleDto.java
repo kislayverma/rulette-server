@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.rule;
+package com.github.kislayverma.rulette.rest.api.rule;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.rulesystem;
+package com.github.kislayverma.rulette.rest.api.rulesystem;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.data.IDataProvider;
@@ -6,7 +6,7 @@ import com.github.kislayverma.rulette.core.metadata.RuleSystemMetaData;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.exception.ProviderNotFoundException;
 import com.github.kislayverma.rulette.rest.exception.RuleSystemNotFoundException;
-import com.github.kislayverma.rulette.rest.provider.DataProviderService;
+import com.github.kislayverma.rulette.rest.api.provider.DataProviderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

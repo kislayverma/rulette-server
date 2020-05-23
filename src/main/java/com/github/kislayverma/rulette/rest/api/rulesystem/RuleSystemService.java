@@ -1,4 +1,4 @@
-package com.github.kislayverma.rulette.rest.rulesystem;
+package com.github.kislayverma.rulette.rest.api.rulesystem;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.core.exception.RuleConflictException;
@@ -7,7 +7,7 @@ import com.github.kislayverma.rulette.rest.exception.BadClientException;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
 import com.github.kislayverma.rulette.rest.exception.RuleSystemNotFoundException;
 import com.github.kislayverma.rulette.rest.model.PaginatedResult;
-import com.github.kislayverma.rulette.rest.provider.DataProviderService;
+import com.github.kislayverma.rulette.rest.api.provider.DataProviderService;
 import com.github.kislayverma.rulette.rest.utils.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

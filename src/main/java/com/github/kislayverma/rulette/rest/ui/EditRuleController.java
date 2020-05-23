@@ -2,9 +2,9 @@ package com.github.kislayverma.rulette.rest.ui;
 
 import com.github.kislayverma.rulette.RuleSystem;
 import com.github.kislayverma.rulette.rest.exception.BadServerException;
-import com.github.kislayverma.rulette.rest.rule.RuleDto;
-import com.github.kislayverma.rulette.rest.rule.RuleService;
-import com.github.kislayverma.rulette.rest.rulesystem.RuleSystemService;
+import com.github.kislayverma.rulette.rest.api.rule.RuleDto;
+import com.github.kislayverma.rulette.rest.api.rule.RuleService;
+import com.github.kislayverma.rulette.rest.api.rulesystem.RuleSystemService;
 import com.github.kislayverma.rulette.rest.utils.TransformerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
