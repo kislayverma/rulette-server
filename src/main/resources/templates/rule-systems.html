@@ -105,8 +105,7 @@
                             </a>
                         </td>
                         <td align="center">
-                            <a th:href="@{/ui/provider/{providerName}/rulesystem/{ruleSystemName}/delete
-                                (providerName = ${ruleSystem.providerName}, ruleSystemName=${ruleSystem.ruleSystemName})}"
+                            <a th:onclick="alert('Cannot delete rule systems in the demo instance. Trust us, we blocked it because it works :)')"
                                class="btn btn-danger btn-sm">
                                 <i class="fas fa-user-times ml-2"></i>
                             </a>
