@@ -13,4 +13,11 @@ public class RuleDto {
     public void setRuleInputs(Map<String, String> ruleInputs) {
         this.ruleInputs = ruleInputs;
     }
+
+    @Override
+    public String toString() {
+        return "RuleDto{" +
+            "ruleInputs=" + ruleInputs +
+            '}';
+    }
 }
