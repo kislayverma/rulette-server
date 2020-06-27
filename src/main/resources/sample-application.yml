@@ -1,7 +1,9 @@
 server.port: 8081
 
 logging:
-  file: ./logs/rulette-server.log
+  # If providing this file externally, give the full path of the logback configuration
+  config: sample-logback-spring.xml
+
   level:
     root: DEBUG
 
