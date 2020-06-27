@@ -16,8 +16,7 @@ public class DataProviderController {
     private DataProviderService dataProviderService;
 
     @GetMapping("/")
-    public List<DataProviderConfig> getAllProviders(@PathVariable String ruleSystemName,
-                                                    @RequestParam(defaultValue = "1") Integer pageNum,
+    public List<DataProviderConfig> getAllProviders(@RequestParam(defaultValue = "1") Integer pageNum,
                                                     @RequestParam(defaultValue = "50") Integer pageSize) {
         return dataProviderService.getAllProviderConfigs();
     }
