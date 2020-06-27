@@ -24,29 +24,18 @@ public class DataProviderService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataProviderService.class);
 
     @Autowired
-    private RuleSystemConfigList ruleSystemConfigList;
-
-    @Autowired
     private DataProviderFactory providerFactory;
-
-    private final Map<String, IDataProvider> ruleSystemProviderMap = new HashMap<>();
 
     private final Map<String, IDataProvider> providerNameProviderMap = new HashMap<>();
 
-    private final Map<String, String> ruleSystemProviderNameMap = new HashMap<>();
-
     @PostConstruct
     public final void init() {
-        providerFactory.getAllProviderConfigs().stream().forEach(providerConfig -> {
-            IDataProvider provider = providerFactory.getProvider(providerConfig.getName());
-            providerNameProviderMap.put(providerConfig.getName(), provider);
-
-            List<RuleSystemMetaData> allRuleSystems = provider.getAllRuleSystemMetaData();
-            for (RuleSystemMetaData ruleSystem : allRuleSystems) {
-                ruleSystemProviderMap.put(ruleSystem.getRuleSystemName(), provider);
-                ruleSystemProviderNameMap.put(ruleSystem.getRuleSystemName(), providerConfig.getName());
-            }
-        });
+        providerFactory.getAllProviderConfigs()
+                .stream()
+                .forEach(providerConfig -> {
+                    IDataProvider provider = providerFactory.getProvider(providerConfig.getName());
+                    providerNameProviderMap.put(providerConfig.getName(), provider);
+                });
     }
 
     public List<DataProviderConfig> getAllProviderConfigs() {
@@ -67,8 +56,6 @@ public class DataProviderService {
             throw new ProviderNotFoundException("Invalid provider name");
         }
         provider.createRuleSystem(ruleSystemMetaData);
-        this.ruleSystemProviderMap.put(ruleSystemMetaData.getRuleSystemName(), provider);
-        this.ruleSystemProviderNameMap.put(ruleSystemMetaData.getRuleSystemName(), providerName);
     }
 
     public void deleteRuleSystemMetadata(String providerName, String ruleSystemName) {
@@ -77,8 +64,6 @@ public class DataProviderService {
             throw new ProviderNotFoundException("Invalid provider name");
         }
         provider.deleteRuleSystem(ruleSystemName);
-        this.ruleSystemProviderMap.remove(ruleSystemName);
-        this.ruleSystemProviderNameMap.remove(ruleSystemName);
     }
 
     public IDataProvider getProvider(String providerName) {
